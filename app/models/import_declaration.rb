@@ -121,7 +121,8 @@ class ImportDeclaration < ActiveRecord::Base
   }
 
   def amount_lvl(amount, currency)
-    amount.to_f * RATES[currency]
+    raise ArgumentError, "trūkst #{currency} valūtas kurss" unless rate = RATES[currency]
+    amount.to_f * rate
   end
 
   def import_other_workplaces
