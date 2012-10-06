@@ -13,3 +13,15 @@ $ ->
         $details.text importDeclaration.pretty_data
         $details.show()
     false
+
+  $("#import_declarations .action_delete").click ->
+    $tr = $(this).closest("tr")
+    id = $tr.data("id")
+    $.ajax
+      url: "/import_declarations/#{id}"
+      type: "DELETE"
+      success: ->
+        $tr.hide "slow", -> $tr.remove()
+      dataType: "json"
+    false
+

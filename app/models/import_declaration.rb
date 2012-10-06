@@ -5,6 +5,10 @@ class ImportDeclaration < ActiveRecord::Base
     status == 'new'
   end
 
+  def error?
+    status == 'error'
+  end
+
   def data
     JSON.parse read_attribute('data')
   end

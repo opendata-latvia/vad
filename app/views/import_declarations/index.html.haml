@@ -30,5 +30,10 @@
               %a.action_details{href: "#"} parādīt / slēpt
               %pre.details= d.error
           %td
-            - if d.new?
-              = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary'
+            - if d.new? || d.error?
+              .pull-left
+                = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary pull-left'
+            - if d.error?
+              .pull-left
+                &nbsp;
+                = link_to "Izdzēst", "#", :class => 'btn btn-danger action_delete'

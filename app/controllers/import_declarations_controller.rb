@@ -28,4 +28,14 @@ class ImportDeclarationsController < ApplicationController
     end
   end
 
+  def destroy
+    @import_declaration = ImportDeclaration.find(params[:id])
+    @import_declaration.destroy
+    respond_to do |format|
+      format.json do
+        render :json => ""
+      end
+    end
+  end
+
 end
