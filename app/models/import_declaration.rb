@@ -120,9 +120,17 @@ class ImportDeclaration < ActiveRecord::Base
     'RUB'  => 0.017500
   }
 
-  def amount_lvl(amount, currency)
+  def convert_amount_lvl(amount, currency)
     raise ArgumentError, "trūkst #{currency} valūtas kurss" unless rate = RATES[currency]
     amount.to_f * rate
+  end
+
+  # return [amount, currency, amount_lvl]
+  def parse_amount(amount, currency)
+    if currency.blank?
+      amount, currency = amount.split(' ')
+    end
+    [amount, currency, convert_amount_lvl(amount, currency)]
   end
 
   def import_other_workplaces
@@ -155,26 +163,28 @@ class ImportDeclaration < ActiveRecord::Base
     companies.each do |c|
       if c["Kapitāla daļu skaits"]
         registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
+        amount, currency, amount_lvl = parse_amount(c["Summa"], c["Valūta"])
         @declaration.companies.create!(
           :name => c["Juridiskās personas nosaukums"],
           :registration_number => registration_number,
           :legal_address => legal_address,
           :shares => c["Kapitāla daļu skaits"],
-          :amount => (amount = c["Summa"]),
-          :currency => (currency = c["Valūta"]),
-          :amount_lvl => amount_lvl(amount, currency)
+          :amount => amount,
+          :currency => currency,
+          :amount_lvl => amount_lvl
         )
       else
         registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
+        amount, currency, amount_lvl = parse_amount(c["Summa (nominālvērtībā)"], c["Valūta"])
         @declaration.securities.create!(
           :issuer => c["Vērtspapīru emitenta nosaukums"],
           :registration_number => registration_number,
           :legal_address => legal_address,
           :kind => c["Vērtspapīru veids"],
           :units => c["Skaits"],
-          :amount => (amount = c["Summa (nominālvērtībā)"]),
-          :currency => (currency = c["Valūta"]),
-          :amount_lvl => amount_lvl(amount, currency)
+          :amount => amount,
+          :currency => currency,
+          :amount_lvl => amount_lvl
         )
       end
     end
@@ -197,21 +207,22 @@ class ImportDeclaration < ActiveRecord::Base
     return unless cash = data[6]
     cash.each do |c|
       if c["Skaidrās naudas uzkrājuma summa ar cipariem"]
+        amount, currency, amount_lvl = parse_amount(c["Skaidrās naudas uzkrājuma summa ar cipariem"], c["Valūta"])
         @declaration.cash.create!(
           :kind => "Skaidrās naudas uzkrājuma summa ar cipariem",
-          :amount => (amount = c["Skaidrās naudas uzkrājuma summa ar cipariem"]),
-          :currency => (currency = c["Valūta"]),
-          :amount_lvl => amount_lvl(amount, currency),
+          :amount => amount,
+          :currency => currency,
+          :amount_lvl => amount_lvl,
           :amount_in_words => c["Skaidrās naudas uzkrājuma summa ar vārdiem"]
         )
       elsif c["Bezkaidrās naudas uzkrājuma summa"]
         registration_number, legal_address = parse_legal_address(c["Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
-
+        amount, currency, amount_lvl = parse_amount(c["Bezkaidrās naudas uzkrājuma summa"], c["Valūta"])
         @declaration.cash.create!(
           :kind => "Bezkaidrās naudas uzkrājuma summa",
-          :amount => (amount = c["Bezkaidrās naudas uzkrājuma summa"]),
-          :currency => (currency = c["Valūta"]),
-          :amount_lvl => amount_lvl(amount, currency),
+          :amount => amount,
+          :currency => currency,
+          :amount_lvl => amount_lvl,
           :bank => c["Bezskaidrās naudas uzkrājumu turētāja vai norēķinu kartes izdevēja nosaukums"],
           :registration_number => registration_number,
           :legal_address => legal_address
@@ -225,15 +236,15 @@ class ImportDeclaration < ActiveRecord::Base
     income.each do |i|
 
       source, registration_number, legal_address = parse_source(i["Ienākumu gūšanas vieta (avots) – juridiskās personas nosaukums, reģistrācijas numurs komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
-
+      amount, currency, amount_lvl = parse_amount(i["Summa"], i["Valūta"])
       @declaration.income.create!(
         :source => source,
         :registration_number => registration_number,
         :legal_address => legal_address,
         :kind => i["Ienākumu veids"],
-        :amount => (amount = i["Summa"]),
-        :currency => (currency = i["Valūta"]),
-        :amount_lvl => amount_lvl(amount, currency)
+        :amount => amount,
+        :currency => currency,
+        :amount_lvl => amount_lvl
       )
     end
   end
@@ -241,11 +252,12 @@ class ImportDeclaration < ActiveRecord::Base
   def import_deals
     return unless deals = data[8]
     deals.each do |d|
+      amount, currency, amount_lvl = parse_amount(d["Summa"], d["Valūta"])
       @declaration.deals.create!(
         :description => d["Darījuma veids"],
-        :amount => (amount = d["Summa"]),
-        :currency => (currency = d["Valūta"]),
-        :amount_lvl => amount_lvl(amount, currency)
+        :amount => amount,
+        :currency => currency,
+        :amount_lvl => amount_lvl
       )
     end
   end
@@ -257,10 +269,11 @@ class ImportDeclaration < ActiveRecord::Base
         if d["Publicējamā daļa"]
           { :description => d["Publicējamā daļa"] }
         else
+          amount, currency, amount_lvl = parse_amount(d["Summa ar cipariem"], d["Valūta"])
           {
-            :amount => (amount = d["Summa ar cipariem"]),
-            :currency => (currency = d["Valūta"]),
-            :amount_lvl => amount_lvl(amount, currency),
+            :amount => amount,
+            :currency => currency,
+            :amount_lvl => amount_lvl,
             :amount_in_words => d["Summa ar vārdiem"]
           }
         end
@@ -275,10 +288,11 @@ class ImportDeclaration < ActiveRecord::Base
         if l["Publicējamā daļa"]
           { :description => l["Publicējamā daļa"] }
         else
+          amount, currency, amount_lvl = parse_amount(l["Summa ar cipariem"], l["Valūta"])
           {
-            :amount => (amount = l["Summa ar cipariem"]),
-            :currency => (currency = l["Valūta"]),
-            :amount_lvl => amount_lvl(amount, currency),
+            :amount => amount,
+            :currency => currency,
+            :amount_lvl => amount_lvl,
             :amount_in_words => l["Summa ar vārdiem"]
           }
         end
