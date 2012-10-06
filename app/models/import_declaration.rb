@@ -53,6 +53,10 @@ class ImportDeclaration < ActiveRecord::Base
     import_cash
     import_income
     import_deals
+    import_debts
+    import_loans
+    import_other_facts
+    import_relatives
 
     self.error = nil
     self.status = 'imported'
@@ -241,6 +245,49 @@ class ImportDeclaration < ActiveRecord::Base
         :amount => (amount = d["Summa"]),
         :currency => (currency = d["Valūta"]),
         :amount_lvl => amount_lvl(amount, currency)
+      )
+    end
+  end
+
+  def import_debts
+    debts = data[9]
+    debts.each do |d|
+      @declaration.debts.create!(
+        :amount => (amount = d["Summa ar cipariem"]),
+        :currency => (currency = d["Valūta"]),
+        :amount_lvl => amount_lvl(amount, currency),
+        :amount_in_words => d["Summa ar vārdiem"]
+      )
+    end
+  end
+
+  def import_loans
+    loans = data[10]
+    loans.each do |l|
+      @declaration.loans.create!(
+        :amount => (amount = l["Summa ar cipariem"]),
+        :currency => (currency = l["Valūta"]),
+        :amount_lvl => amount_lvl(amount, currency),
+        :amount_in_words => l["Summa ar vārdiem"]
+      )
+    end
+  end
+
+  def import_other_facts
+    other_facts = data[11]
+    other_facts.each do |of|
+      @declaration.other_facts.create!(
+        :description => of["Publicējamā daļa"]
+      )
+    end
+  end
+
+  def import_relatives
+    relatives = data[12]
+    relatives.each do |r|
+      @declaration.relatives.create!(
+        :full_name => r["Vārds, uzvārds"],
+        :kind => r["Radniecība"]
       )
     end
   end

@@ -81,7 +81,6 @@ describe "import declaration" do
   end
 
   it "should create vehicles" do
-    binding.pry
     @declaration.vehicles.map{|r| [r.kind, r.model, r.release_year, r.registration_year, r.ownership_type]}.first.should ==
       [
         "Vieglais pasažieru",
@@ -151,4 +150,44 @@ describe "import declaration" do
       ]
   end
 
+  it "creates debts" do
+    @declaration.debts.map { |r|
+      [r.amount, r.currency, r.amount_lvl, r.amount_in_words]
+    }.first.should ==
+      [
+        5000.00,
+        "LVL",
+        5000.00,
+        "pieci tūkstoši latu"
+      ]
+  end
+
+  it "creates loans" do
+    @declaration.loans.map { |r|
+      [r.amount, r.currency, r.amount_lvl, r.amount_in_words]
+    }.first.should ==
+      [
+        190548.41,
+        "LVL",
+        190548.41,
+        "viens simts deviņdesmit tūkstoši pieci simti četrdesmit astoņi lati 41 santīms"
+      ]
+  end
+
+  it "creats other facts" do
+    @declaration.other_facts.map { |r| [r.description] }.first.should ==
+      [
+        "2011 GADA ZIEDOJUMI-NĪTAURES VIDUSSK., SIGULDAS VALSTS ĢIMNĀZIJA,MEDUMU VIDUSSKOLA, CĒSU VALSTS ĢIMNĀZIJA, VIĻĀNU VIDUSSK."
+      ]
+  end
+
+  it "creates relatives" do
+    @declaration.relatives.map { |r|
+      [r.full_name, r.kind]
+    }.first.should ==
+      [
+        "AIGARS BĒRZIŅŠ",
+        "Dēls"
+      ]
+  end
 end
