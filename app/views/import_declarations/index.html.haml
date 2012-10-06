@@ -7,6 +7,8 @@
   vai tikai ar statusu
   - %w(new error imported).each do |status|
     = link_to status, import_declarations_path(:status => status)
+  %br/
+  = "Kopā #{@import_declarations.size} ieraksti"
 
   %table.table.table-hover
     %thead
