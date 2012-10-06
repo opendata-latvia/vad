@@ -46,6 +46,7 @@ group :development do
   gem 'guard-rspec'
 
   gem 'thin' # to avoid webrick warnings about missing content-length
+  gem 'sprinkle', :require => false
   gem 'capistrano', :require => false
   gem 'capistrano-ext', :require => false
 end
