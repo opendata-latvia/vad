@@ -21,6 +21,7 @@
           %a.brand{href: "/"} VAD
           .nav-collapse
             %ul.nav
+              %li{:class => top_menu_class(ImportDeclarationsController)}= link_to "Importēt deklarācijas", import_declarations_path
             %ul.nav.pull-right
 
     .container

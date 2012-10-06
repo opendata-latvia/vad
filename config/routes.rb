@@ -3,5 +3,7 @@ Vad::Application.routes.draw do
 
   resources :import_declarations do
     put :import, :on => :member
+    post :import_all, :on => :collection
+    post :delete_imported, :on => :collection
   end
 end

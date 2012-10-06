@@ -81,6 +81,7 @@ describe "import declaration" do
   end
 
   it "should create vehicles" do
+    binding.pry
     @declaration.vehicles.map{|r| [r.kind, r.model, r.release_year, r.registration_year, r.ownership_type]}.first.should ==
       [
         "Vieglais pasažieru",

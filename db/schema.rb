@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121006093144) do
+ActiveRecord::Schema.define(:version => 20121006160733) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -153,8 +153,9 @@ ActiveRecord::Schema.define(:version => 20121006093144) do
     t.date     "submitted_on"
     t.date     "published_on"
     t.integer  "person_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.integer  "import_declaration_id"
   end
 
   create_table "import_declarations", :force => true do |t|
@@ -163,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20121006093144) do
     t.string    "md5"
     t.timestamp "created_at",                    :null => false
     t.datetime  "updated_at"
+    t.text      "error"
   end
 
   create_table "people", :force => true do |t|

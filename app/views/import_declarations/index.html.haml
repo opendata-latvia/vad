@@ -1,17 +1,34 @@
-%table#import_declarations.table.table-hover
-  %thead
-    %tr
-      %th.span2 Izveidots
-      %th.span2 Statuss
-      %th.span6 Dati
-      %th.span2
-  %tbody
-    - @import_declarations.each do |d|
+#import_declarations
+  .row
+    .span2= button_to "Importēt visus", import_all_import_declarations_path, :class => 'btn btn-primary'
+    .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path, :class => 'btn btn-danger'
+
+  = link_to "Visi statusi", import_declarations_path
+  vai tikai ar statusu
+  - %w(new error imported).each do |status|
+    = link_to status, import_declarations_path(:status => status)
+
+  %table.table.table-hover
+    %thead
       %tr
-        %td= d.created_at.to_s(:db)
-        %td= d.status
-        %td
-          %pre= d.pretty_data
-        %td
-          - if d.new?
-            = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary'
+        %th.span1 Izveidots
+        %th.span1 Statuss
+        %th.span5 Dati
+        %th.span3 Kļūdas
+        %th.span2
+    %tbody
+      - @import_declarations.each do |d|
+        %tr
+          %td= d.created_at.to_s(:db)
+          %td
+            %span.label{class: status_label(d.status)}= d.status
+          %td
+            %a.action_details{href: "#"} parādīt / slēpt
+            %pre.details= d.pretty_data
+          %td
+            - if d.error.present?
+              %a.action_details{href: "#"} parādīt / slēpt
+              %pre.details= d.error
+          %td
+            - if d.new?
+              = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary'

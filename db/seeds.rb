@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+ImportDeclaration.create(
+  :status => 'new',
+  :data => File.read(File.expand_path("data.json", "#{Rails.root}/spec/fixtures"))
+)

@@ -13,6 +13,28 @@ class ImportDeclaration < ActiveRecord::Base
     JSON.pretty_generate data
   end
 
+  def self.search(params)
+    relation = order('created_at desc')
+    relation = relation.where(:status => params[:status]) if params[:status]
+    relation
+  end
+
+  def self.import_all!
+    where("status in (?)", %w(new error)).each do |id|
+      id.import!
+    end
+  end
+
+  def self.delete_imported!
+    Declaration.delete_all
+    DeclarationOtherWorkplace.delete_all
+    DeclarationRealEstate.delete_all
+    DeclarationCompany.delete_all
+    DeclarationSecurity.delete_all
+    DeclarationVehicle.delete_all
+    update_all("status = 'new'")
+  end
+
   def import!
     import_head
     import_other_workplaces
@@ -22,6 +44,14 @@ class ImportDeclaration < ActiveRecord::Base
     import_cash
     import_income
     import_deals
+
+    self.error = nil
+    self.status = 'imported'
+    save!
+  rescue => e
+    self.error = "#{e.message}\n#{e.backtrace[0..2].join("\n")}"
+    self.status = 'error'
+    save!
   end
 
   def import_head
@@ -195,7 +225,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_deals
-    deals = data[8] 
+    deals = data[8]
     deals.each do |d|
       @declaration.deals.create!(
         :description => d["Darījuma veids"],

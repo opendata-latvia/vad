@@ -1,5 +1,7 @@
 #import_declarations {
-  pre {
+  pre.details {
+    display: none;
     font-size: 80%;
+    cursor: pointer;
   }
 }
