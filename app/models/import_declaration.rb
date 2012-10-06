@@ -254,10 +254,16 @@ class ImportDeclaration < ActiveRecord::Base
     return unless debts = data[9]
     debts.each do |d|
       @declaration.debts.create!(
-        :amount => (amount = d["Summa ar cipariem"]),
-        :currency => (currency = d["Valūta"]),
-        :amount_lvl => amount_lvl(amount, currency),
-        :amount_in_words => d["Summa ar vārdiem"]
+        if d["Publicējamā daļa"]
+          { :description => d["Publicējamā daļa"] }
+        else
+          {
+            :amount => (amount = d["Summa ar cipariem"]),
+            :currency => (currency = d["Valūta"]),
+            :amount_lvl => amount_lvl(amount, currency),
+            :amount_in_words => d["Summa ar vārdiem"]
+          }
+        end
       )
     end
   end
@@ -266,10 +272,16 @@ class ImportDeclaration < ActiveRecord::Base
     return unless loans = data[10]
     loans.each do |l|
       @declaration.loans.create!(
-        :amount => (amount = l["Summa ar cipariem"]),
-        :currency => (currency = l["Valūta"]),
-        :amount_lvl => amount_lvl(amount, currency),
-        :amount_in_words => l["Summa ar vārdiem"]
+        if l["Publicējamā daļa"]
+          { :description => l["Publicējamā daļa"] }
+        else
+          {
+            :amount => (amount = l["Summa ar cipariem"]),
+            :currency => (currency = l["Valūta"]),
+            :amount_lvl => amount_lvl(amount, currency),
+            :amount_in_words => l["Summa ar vārdiem"]
+          }
+        end
       )
     end
   end
