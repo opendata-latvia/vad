@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121006181108) do
+ActiveRecord::Schema.define(:version => 20121006183237) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -155,9 +155,21 @@ ActiveRecord::Schema.define(:version => 20121006181108) do
     t.date     "submitted_on"
     t.date     "published_on"
     t.integer  "person_id"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
     t.integer  "import_declaration_id"
+    t.integer  "declaration_other_workplaces_count", :default => 0
+    t.integer  "declaration_real_estates_count",     :default => 0
+    t.integer  "declaration_companies_count",        :default => 0
+    t.integer  "declaration_securities_count",       :default => 0
+    t.integer  "declaration_vehicles_count",         :default => 0
+    t.integer  "declaration_cash_count",             :default => 0
+    t.integer  "declaration_income_count",           :default => 0
+    t.integer  "declaration_deals_count",            :default => 0
+    t.integer  "declaration_debts_count",            :default => 0
+    t.integer  "declaration_loans_count",            :default => 0
+    t.integer  "declaration_relatives_count",        :default => 0
+    t.integer  "declaration_childrens_count",        :default => 0
   end
 
   create_table "import_declarations", :force => true do |t|
