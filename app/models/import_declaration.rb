@@ -125,7 +125,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_other_workplaces
-    other_workplaces = data[2]
+    return unless other_workplaces = data[2]
     other_workplaces.each do |ow|
       registration_number, legal_address = parse_legal_address ow["Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
       @declaration.other_workplaces.create!(
@@ -138,7 +138,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_real_estates
-    real_estates = data[3]
+    return unless real_estates = data[3]
     real_estates.each do |re|
       @declaration.real_estates.create!(
         :kind => re["Nekustamā īpašuma veids"],
@@ -150,7 +150,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_companies_and_securities
-    companies = data[4]
+    return unless companies = data[4]
     companies.each do |c|
       if c["Kapitāla daļu skaits"]
         registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
@@ -180,7 +180,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_vehicles
-    vehicles = data[5]
+    return unless vehicles = data[5]
     vehicles.each do |v|
       @declaration.vehicles.create!(
         :kind => v["Transportlīdzekļa veids"],
@@ -193,7 +193,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_cash
-    cash = data[6]
+    return unless cash = data[6]
     cash.each do |c|
       if c["Skaidrās naudas uzkrājuma summa ar cipariem"]
         @declaration.cash.create!(
@@ -220,7 +220,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_income
-    income = data[7]
+    return unless income = data[7]
     income.each do |i|
 
       source, registration_number, legal_address = parse_source(i["Ienākumu gūšanas vieta (avots) – juridiskās personas nosaukums, reģistrācijas numurs komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
@@ -238,7 +238,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_deals
-    deals = data[8]
+    return unless deals = data[8]
     deals.each do |d|
       @declaration.deals.create!(
         :description => d["Darījuma veids"],
@@ -250,7 +250,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_debts
-    debts = data[9]
+    return unless debts = data[9]
     debts.each do |d|
       @declaration.debts.create!(
         :amount => (amount = d["Summa ar cipariem"]),
@@ -262,7 +262,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_loans
-    loans = data[10]
+    return unless loans = data[10]
     loans.each do |l|
       @declaration.loans.create!(
         :amount => (amount = l["Summa ar cipariem"]),
@@ -274,7 +274,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_other_facts
-    other_facts = data[11]
+    return unless other_facts = data[11]
     other_facts.each do |of|
       @declaration.other_facts.create!(
         :description => of["Publicējamā daļa"]
@@ -283,7 +283,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_relatives
-    relatives = data[12]
+    return unless relatives = data[12]
     relatives.each do |r|
       @declaration.relatives.create!(
         :full_name => r["Vārds, uzvārds"],
