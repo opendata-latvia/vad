@@ -10,7 +10,7 @@ gem 'simple_form'
 gem 'redis'
 gem 'redis-rails'
 
-gem 'devise'
+# gem 'devise'
 gem 'cancan'
 
 # Gems used only for assets and not required
@@ -36,9 +36,15 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'awesome_print', :require => 'ap'
+  gem 'pry'
 end
 
 group :development do
+  gem 'guard'
+  gem 'rb-fsevent'
+  gem 'growl'
+  gem 'guard-rspec'
+
   gem 'thin' # to avoid webrick warnings about missing content-length
   gem 'capistrano', :require => false
   gem 'capistrano-ext', :require => false

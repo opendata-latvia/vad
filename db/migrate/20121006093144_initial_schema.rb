@@ -5,6 +5,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.string :person_code
+      t.timestamps
     end
 
     create_table :declarations do |t|
@@ -17,6 +18,7 @@ class InitialSchema < ActiveRecord::Migration
       t.date :submitted_on
       t.date :published_on
       t.integer :person_id
+      t.timestamps
     end
 
     create_table :declaration_other_workplaces do |t|
@@ -25,6 +27,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :workplace
       t.string :registration_number
       t.string :legal_address
+      t.timestamps
     end
 
     create_table :declaration_real_estates do |t|
@@ -33,6 +36,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :location
       t.string :ownership_type
       t.string :other_owners
+      t.timestamps
     end
 
     create_table :declaration_companies do |t|
@@ -44,17 +48,20 @@ class InitialSchema < ActiveRecord::Migration
       t.decimal :amount, :precision => 15, :scale => 2
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
+      t.timestamps
     end
 
     create_table :declaration_securities do |t|
       t.integer :declaration_id
       t.string :issuer
       t.string :registration_number
+      t.string :legal_address
       t.string :kind
       t.integer :units
       t.decimal :amount, :precision => 15, :scale => 2
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
+      t.timestamps
     end
 
     create_table :declaration_vehicles do |t|
@@ -64,6 +71,7 @@ class InitialSchema < ActiveRecord::Migration
       t.integer :release_year
       t.integer :registration_year
       t.string :ownership_type
+      t.timestamps
     end
 
     create_table :declaration_cash do |t|
@@ -76,6 +84,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :bank
       t.string :registration_number
       t.string :legal_address
+      t.timestamps
     end
 
     create_table :declaration_income do |t|
@@ -87,6 +96,7 @@ class InitialSchema < ActiveRecord::Migration
       t.decimal :amount, :precision => 15, :scale => 2
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
+      t.timestamps
     end
 
     create_table :declaration_deals do |t|
@@ -95,6 +105,7 @@ class InitialSchema < ActiveRecord::Migration
       t.decimal :amount, :precision => 15, :scale => 2
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
+      t.timestamps
     end
 
     create_table :declaration_debts do |t|
@@ -103,6 +114,7 @@ class InitialSchema < ActiveRecord::Migration
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
       t.string :amount_in_words
+      t.timestamps
     end
 
     create_table :declaration_loans do |t|
@@ -111,22 +123,28 @@ class InitialSchema < ActiveRecord::Migration
       t.string :currency
       t.decimal :amount_lvl, :precision => 15, :scale => 2
       t.string :amount_in_words
+      t.timestamps
     end
 
     create_table :declaration_other_facts do |t|
       t.integer :declaration_id
       t.text :description
+      t.timestamps
     end
 
     create_table :declaration_relatives do |t|
       t.integer :declaration_id
       t.string :full_name
       t.string :kind
+      t.timestamps
     end
 
     create_table :import_declarations do |t|
       t.string :status, :default => 'new'
       t.text :data
+      t.string :md5
+      t.timestamp :created_at
+      t.datetime :updated_at
     end
   end
 

@@ -1,0 +1,140 @@
+# encoding: utf-8
+
+class ImportDeclaration < ActiveRecord::Base
+  def new?
+    status == 'new'
+  end
+
+  def data
+    JSON.parse read_attribute('data')
+  end
+
+  def pretty_data
+    JSON.pretty_generate data
+  end
+
+  def import!
+    import_head
+    import_other_workplaces
+    import_real_estates
+    import_companies
+    import_vehicles
+  end
+
+  def import_head
+    head = data[1]
+    kind, period_year = head["Deklarācijas veids"].split('-')
+    kind = kind.strip
+    if period_year =~ /(\d+)/
+      period_year = $1
+    end
+    @declaration = Declaration.new(
+      :kind => kind,
+      :period_year => period_year,
+      :full_name => head["Vārds uzvārds"],
+      :workplace => head["Darbavieta"],
+      :position => head["Amats"],
+      :submitted_on => parse_date(head["Iesniegta VID"]),
+      :published_on => parse_date(head["Publicēta"])
+    )
+    @declaration.save!
+  end
+
+  private
+
+  def parse_date(string)
+    if string =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/
+      Date.new($3.to_i, $2.to_i, $1.to_i)
+    end
+  end
+
+  # returns [registration_number, legal_address]
+  def parse_legal_address(string)
+    if string =~ /^\s*(\d+)\s*(.*)$/
+      [$1, $2]
+    else
+      [nil, string]
+    end
+  end
+
+  RATES = {
+    'LVL' => 1,
+    'EUR' => 0.702804,
+    'USD' => 0.544000,
+    'GBP' => 0.875000,
+    'RUB'  => 0.017500
+  }
+
+  def amount_lvl(amount, currency)
+    amount.to_f * RATES[currency]
+  end
+
+  def import_other_workplaces
+    other_workplaces = data[2]
+    other_workplaces.each do |ow|
+      registration_number, legal_address = parse_legal_address ow["Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
+      @declaration.other_workplaces.create!(
+        :position => ow["Amata nosaukums, darbi, informācija par uzņēmuma līgumiem un pilnvarojumiem"],
+        :workplace => ow["Juridiskās personas nosaukums; fiziskās personas vārds un uzvārds"],
+        :registration_number => registration_number,
+        :legal_address => legal_address
+      )
+    end
+  end
+
+  def import_real_estates
+    real_estates = data[3]
+    real_estates.each do |re|
+      @declaration.real_estates.create!(
+        :kind => re["Nekustamā īpašuma veids"],
+        :location => re["Nekustamā īpašuma atrašanās vieta (valsts, pilsēta/apdzīvota vieta)"],
+        :ownership_type => re["Atzīme par to, vai ir īpašumā (kopīpašumā), valdījumā vai lietošanā"],
+        :other_owners => re["Ja ir valdījumā, lietošanā vai kopīpašumā, norādīt īpašnieka vai līdzīpašnieka vārdu un uzvārdu"]
+      )
+    end
+  end
+
+  def import_companies
+    companies = data[4]
+    companies.each do |c|
+      if c["Kapitāla daļu skaits"]
+        registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
+        @declaration.companies.create!(
+          :name => c["Juridiskās personas nosaukums"],
+          :registration_number => registration_number,
+          :legal_address => legal_address,
+          :shares => c["Kapitāla daļu skaits"],
+          :amount => (amount = c["Summa"]),
+          :currency => (currency = c["Valūta"]),
+          :amount_lvl => amount_lvl(amount, currency)
+        )
+      else
+        registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
+        @declaration.securities.create!(
+          :issuer => c["Vērtspapīru emitenta nosaukums"],
+          :registration_number => registration_number,
+          :legal_address => legal_address,
+          :kind => c["Vērtspapīru veids"],
+          :units => c["Skaits"],
+          :amount => (amount = c["Summa (nominālvērtībā)"]),
+          :currency => (currency = c["Valūta"]),
+          :amount_lvl => amount_lvl(amount, currency)
+        )
+      end
+    end
+  end
+
+  def import_vehicles
+    vehicles = data[5]
+    vehicles.each do |v|
+      @declaration.vehicles.create!(
+        :kind => v["Transportlīdzekļa veids"],
+        :model => v["Marka"],
+        :release_year => v["Izlaides gads"],
+        :registration_year => v["Reģistrācijas gads"],
+        :ownership_type => v["Atzīme par to, vai ir īpašumā, valdījumā vai lietošanā"]
+      )
+    end
+  end
+
+end

@@ -1,0 +1,17 @@
+%table#import_declarations.table.table-hover
+  %thead
+    %tr
+      %th.span2 Izveidots
+      %th.span2 Statuss
+      %th.span6 Dati
+      %th.span2
+  %tbody
+    - @import_declarations.each do |d|
+      %tr
+        %td= d.created_at.to_s(:db)
+        %td= d.status
+        %td
+          %pre= d.pretty_data
+        %td
+          - if d.new?
+            = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary'
