@@ -18,13 +18,13 @@
         %th.span2
     %tbody
       - @import_declarations.each do |d|
-        %tr
+        %tr{:data => {:id => d.id}}
           %td= d.created_at.to_s(:db)
           %td
             %span.label{class: status_label(d.status)}= d.status
           %td
             %a.action_details{href: "#"} parādīt / slēpt
-            %pre.details= d.pretty_data
+            %pre.details
           %td
             - if d.error.present?
               %a.action_details{href: "#"} parādīt / slēpt

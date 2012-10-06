@@ -19,4 +19,13 @@ class ImportDeclarationsController < ApplicationController
     redirect_to :action => :index
   end
 
+  def show
+    @import_declaration = ImportDeclaration.find(params[:id])
+    respond_to do |format|
+      format.json do
+        render :json => @import_declaration
+      end
+    end
+  end
+
 end

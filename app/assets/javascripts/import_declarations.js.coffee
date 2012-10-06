@@ -3,6 +3,13 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
-  $('.action_details').click ->
-    $(this).next(".details").toggle()
+  $("#import_declarations .action_details").click ->
+    $details = $(this).next(".details")
+    if $details.text().length
+      $details.toggle()
+    else
+      id = $details.closest("tr").data("id")
+      $.getJSON "/import_declarations/#{id}", (importDeclaration) ->
+        $details.text importDeclaration.pretty_data
+        $details.show()
     false

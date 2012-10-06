@@ -13,6 +13,12 @@ class ImportDeclaration < ActiveRecord::Base
     JSON.pretty_generate data
   end
 
+  def as_json(options = {})
+    super.merge(
+      :pretty_data => pretty_data
+    )
+  end
+
   def self.search(params)
     relation = order('created_at desc')
     relation = relation.where(:status => params[:status]) if params[:status]
