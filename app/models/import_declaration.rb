@@ -32,6 +32,9 @@ class ImportDeclaration < ActiveRecord::Base
     DeclarationCompany.delete_all
     DeclarationSecurity.delete_all
     DeclarationVehicle.delete_all
+    DeclarationCash.delete_all
+    DeclarationIncome.delete_all
+    DeclarationDeal.delete_all
     update_all("status = 'new'")
   end
 
