@@ -17,8 +17,11 @@ class ImportDeclaration < ActiveRecord::Base
     import_head
     import_other_workplaces
     import_real_estates
-    import_companies
+    import_companies_and_securities
     import_vehicles
+    import_cash
+    import_income
+    import_deals
   end
 
   def import_head
@@ -54,6 +57,15 @@ class ImportDeclaration < ActiveRecord::Base
       [$1, $2]
     else
       [nil, string]
+    end
+  end
+
+  # returns [source, registration_number, legal_address]
+  def parse_source(string)
+    if string =~ /^\s*(.*),\s*(\d+),\s*(.*)$/
+      [$1, $2, $3]
+    else
+      [nil, nil, string]
     end
   end
 
@@ -94,7 +106,7 @@ class ImportDeclaration < ActiveRecord::Base
     end
   end
 
-  def import_companies
+  def import_companies_and_securities
     companies = data[4]
     companies.each do |c|
       if c["Kapitāla daļu skaits"]
@@ -133,6 +145,63 @@ class ImportDeclaration < ActiveRecord::Base
         :release_year => v["Izlaides gads"],
         :registration_year => v["Reģistrācijas gads"],
         :ownership_type => v["Atzīme par to, vai ir īpašumā, valdījumā vai lietošanā"]
+      )
+    end
+  end
+
+  def import_cash
+    cash = data[6]
+    cash.each do |c|
+      if c["Skaidrās naudas uzkrājuma summa ar cipariem"]
+        @declaration.cash.create!(
+          :kind => "Skaidrās naudas uzkrājuma summa ar cipariem",
+          :amount => (amount = c["Skaidrās naudas uzkrājuma summa ar cipariem"]),
+          :currency => (currency = c["Valūta"]),
+          :amount_lvl => amount_lvl(amount, currency),
+          :amount_in_words => c["Skaidrās naudas uzkrājuma summa ar vārdiem"]
+        )
+      elsif c["Bezkaidrās naudas uzkrājuma summa"]
+        registration_number, legal_address = parse_legal_address(c["Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
+
+        @declaration.cash.create!(
+          :kind => "Bezkaidrās naudas uzkrājuma summa",
+          :amount => (amount = c["Bezkaidrās naudas uzkrājuma summa"]),
+          :currency => (currency = c["Valūta"]),
+          :amount_lvl => amount_lvl(amount, currency),
+          :bank => c["Bezskaidrās naudas uzkrājumu turētāja vai norēķinu kartes izdevēja nosaukums"],
+          :registration_number => registration_number,
+          :legal_address => legal_address
+        )
+      end
+    end
+  end
+
+  def import_income
+    income = data[7]
+    income.each do |i|
+
+      source, registration_number, legal_address = parse_source(i["Ienākumu gūšanas vieta (avots) – juridiskās personas nosaukums, reģistrācijas numurs komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
+
+      @declaration.income.create!(
+        :source => source,
+        :registration_number => registration_number,
+        :legal_address => legal_address,
+        :kind => i["Ienākumu veids"],
+        :amount => (amount = i["Summa"]),
+        :currency => (currency = i["Valūta"]),
+        :amount_lvl => amount_lvl(amount, currency)
+      )
+    end
+  end
+
+  def import_deals
+    deals = data[8] 
+    deals.each do |d|
+      @declaration.deals.create!(
+        :description => d["Darījuma veids"],
+        :amount => (amount = d["Summa"]),
+        :currency => (currency = d["Valūta"]),
+        :amount_lvl => amount_lvl(amount, currency)
       )
     end
   end

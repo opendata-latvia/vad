@@ -15,6 +15,6 @@
 # end
 
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.uncountable %w( cash income )
+  inflect.uncountable %w( cash income declaration_cash declaration_income )
 end
 

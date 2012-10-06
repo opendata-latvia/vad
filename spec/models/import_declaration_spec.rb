@@ -91,6 +91,63 @@ describe "import declaration" do
       ]
   end
 
+  it "creates cash on hand" do
+    @declaration.cash.map { |r|
+      [r.kind, r.amount, r.currency, r.amount_lvl, r.amount_in_words]
+    }.first.should ==
+      [
+        "Skaidrās naudas uzkrājuma summa ar cipariem",
+        500.00,
+        "LVL",
+        500.00,
+        "pieci simti latu"
+      ]
+  end
 
+  it "creates cash in bank" do
+    @declaration.cash.map { |r|
+      if r.bank
+        [r.kind, r.amount, r.currency, r.amount_lvl, r.bank, r.registration_number, r.legal_address]
+      end
+    }.compact.first.should ==
+      [
+        "Bezkaidrās naudas uzkrājuma summa",
+        25289.31,
+        "LVL",
+        25289.31,
+        "AS \"SEB banka\"",
+        "40003151743",
+        "Latvija, Ķekavas pag., Valdlauči, Meistaru 1"
+      ]
+  end
+
+  it "creates income" do
+    @declaration.income.map { |r|
+      if r.registration_number
+        [r.source, r.registration_number, r.legal_address, r.kind, r.amount.to_s, r.currency, r.amount_lvl.to_s]
+      end
+    }.compact.first.should ==
+      [
+        "'LATVIJAS REPUBLIKAS SAEIMA'",
+        "90000028300",
+        "Latvija, Rīga, Jēkaba 11",
+        "Alga",
+        "9572.13",
+        "LVL",
+        "9572.13"
+      ]
+  end
+
+  it "creates deals"do
+    @declaration.deals.map { |r|
+      [r.description, r.amount, r.currency, r.amount_lvl]
+    }.first.should ==
+      [
+        "ZEME GARK.KLĀVKALTIŅI-12",
+        44000.00,
+        "LVL",
+        44000.00        
+      ]
+  end
 
 end
