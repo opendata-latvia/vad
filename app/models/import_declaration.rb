@@ -131,6 +131,8 @@ class ImportDeclaration < ActiveRecord::Base
 
   # return [amount, currency, amount_lvl]
   def parse_amount(amount, currency)
+    return [nil, nil, nil] unless amount.to_s =~ /\d/
+
     if currency.blank?
       amount, currency = amount.split(' ')
     end
