@@ -171,7 +171,9 @@ class ImportDeclaration < ActiveRecord::Base
     'AUD' => 0.556000,
     'MTL' => 1.62,
     'NZD' => 0.446000,
-    'CAD' => 0.551000
+    'CAD' => 0.551000,
+    'SEK' => 0.081500,
+    'CYP' => 1.18998
   }
 
   def convert_amount_lvl(amount, currency)
