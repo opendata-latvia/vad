@@ -5,7 +5,7 @@
 
   = link_to "Visi statusi", import_declarations_path
   vai tikai ar statusu
-  - %w(new error imported).each do |status|
+  - %w(new error skip imported).each do |status|
     = link_to status, import_declarations_path(:status => status)
   %br/
   = "Kopā #{@import_declarations.size} ieraksti"
@@ -29,6 +29,8 @@
             %pre.details
           %td
             - if d.error.present?
+              = d.error.split("\n").first
+              &nbsp;&nbsp;
               %a.action_details{href: "#"} parādīt / slēpt
               %pre.details= d.error
           %td
