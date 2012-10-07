@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121006183237) do
+ActiveRecord::Schema.define(:version => 20121007070923) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -186,8 +186,9 @@ ActiveRecord::Schema.define(:version => 20121006183237) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "person_code"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "declaration_hash"
   end
 
 end

@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'digest/md5'
 
 class ImportDeclaration < ActiveRecord::Base
   def new?
@@ -62,6 +63,8 @@ class ImportDeclaration < ActiveRecord::Base
     import_other_facts
     import_relatives
 
+    create_person
+
     self.error = nil
     self.status = 'imported'
     save!
@@ -91,6 +94,23 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   private
+  
+  def create_person
+    declaration_hash = Digest::MD5.hexdigest(data[0].to_s)
+
+    if (person = Person.where(:declaration_hash => declaration_hash).any?)
+      Declaration.last.update_attributes(:person_id => person.id)
+    else
+      first_name, last_name = data[0]["Vārds, uzvārds"].split(/^\s*(\w+)\s*(.+)/).reject(&:blank?)
+      person = Person.create!(
+        :full_name => data[0]["Vārds, uzvārds"],
+        :first_name => first_name,
+        :last_name => last_name,
+        :declaration_hash => declaration_hash
+      )
+      Declaration.last.update_attributes(:person_id => person.id)
+    end
+  end
 
   def parse_date(string)
     if string =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/

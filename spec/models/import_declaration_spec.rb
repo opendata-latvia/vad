@@ -190,4 +190,11 @@ describe "import declaration" do
         "Dēls"
       ]
   end
+
+  it "creates person" do
+    person = Person.last
+    person.full_name.should eq("ANDRIS BĒRZIŅŠ")
+    person.first_name.should eq("ANDRIS")
+    person.last_name.should eq("BĒRZIŅŠ")
+  end
 end
