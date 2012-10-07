@@ -42,7 +42,20 @@
     "Darbavieta": "'LATVIJAS VALSTS PREZIDENTA KANCELEJA'",
     "Amats": "Valsts prezidents",
     "Iesniegta VID": "29.03.2012",
-    "Publicēta": "13.04.2012"
+    "Publicēta": "13.04.2012",
+    "Sadaļas": [
+      "2. Citi amati, kurus deklarācijas iesniedzējs ieņem papildus valsts amatpersonas amatam (t.sk. amati biedrībās, nodibinājumos, politiskajās, reliģiskajās organizācijās un arodbiedrībās), un citi darbi, kurus deklarācijas iesniedzējs strādā, kā arī informācija par uzņēmuma līgumiem vai pilnvarojumiem, kuros noteiktās saistības tas pilda",
+      "3. Deklarācijas iesniedzēja īpašumā (kopīpašumā), valdījumā vai lietošanā esošie nekustamie īpašumi (arī tie, kurus tas nomā no citām personām un kuri atrodas tā valdījumā sakarā ar nodibināto aizbildnību vai aizgādnību)",
+      "4. Komercsabiedrības, kuru dalībnieks, akcionārs vai biedrs ir deklarācijas iesniedzējs, kā arī norāde, ka deklarācijas iesniedzējs ir individuālais komersants. Deklarācijas iesniedzējam piederošās kapitāla daļas, akcijas un vērtspapīri (privatizācijas un kompensācijas sertifikātiem norāda tikai skaitu)",
+      "5. Deklarācijas iesniedzējam piederošie reģistrējamie transportlīdzekļi, kā arī tā valdījumā vai lietošanā esošie transportlīdzekļi un transportlīdzekļi, kurus tas ir iegādājies uz līzinga līguma pamata",
+      "6. Deklarācijas iesniedzēja skaidrās un bezskaidrās naudas uzkrājumi, ja to summa pārsniedz 20 Ministru kabineta noteiktās minimālās mēnešalgas (attiecīgās valūtas vienībās)",
+      "7. Visi deklarācijas iesniedzēja pārskata periodā gūtie ienākumi, piemēram, darba alga, piemaksas pie darba algas, prēmijas, honorāri, ienākumi no saimnieciskās un komercdarbības, apdrošināšanas izmaksas, kompensācijas, ienākumi no kustamās un nekustamās mantas realizācijas un nomas (īres), laimesti un dividendes, mantojumi, dāvinājumi un citi ienākumi",
+      "8. Deklarācijas iesniedzēja pārskata periodā veiktie darījumi, ja to summa pārsniedz 20 Ministru kabineta noteiktās minimālās mēnešalgas",
+      "9. Deklarācijas iesniedzēja parādsaistības, kuru apmērs pārsniedz 20 Ministru kabineta noteiktās minimālās mēnešalgas",
+      "10. Deklarācijas iesniedzēja izsniegtie aizdevumi, kuru apmērs pārsniedz 20 Ministru kabineta noteiktās minimālās mēnešalgas",
+      "11. Informācija par citiem faktiem, kas, pēc deklarācijas iesniedzēja domām, attiecas uz viņa mantisko stāvokli un tā izmaiņām pārskata periodā un nav norādīti citos deklarācijas publicējamās daļas punktos",
+      "12. Deklarācijas iesniedzēja laulātais, brāļi un māsas, vecāki (arī adoptētāji), bērni (arī adoptētie)"
+    ]
   },
   [
     {
