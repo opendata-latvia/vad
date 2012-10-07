@@ -12,4 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require underscore
+//= require backbone
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap
+//= require vad
 //= require_tree .

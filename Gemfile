@@ -25,7 +25,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
   gem 'twitter-bootstrap-rails'
-  gem 'jquery-datatables-rails'
+  gem 'jquery-datatables-rails', '1.9.1.3'
 
   gem 'quiet_assets', :group => :development
 end

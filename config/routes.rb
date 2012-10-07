@@ -6,4 +6,8 @@ Vad::Application.routes.draw do
     post :import_all, :on => :collection
     post :delete_imported, :on => :collection
   end
+
+  resources :declarations do
+    get :datatable, :on => :collection
+  end
 end

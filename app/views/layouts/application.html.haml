@@ -22,6 +22,7 @@
           .nav-collapse
             %ul.nav
               %li{:class => top_menu_class(ImportDeclarationsController)}= link_to "Importēt deklarācijas", import_declarations_path
+              %li{:class => top_menu_class(DeclarationsController)}= link_to "Deklarācijas", declarations_path
             %ul.nav.pull-right
 
     .container

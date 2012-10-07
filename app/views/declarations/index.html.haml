@@ -1,0 +1,18 @@
+#declarations.span8
+  %table.table.table-condensed{data: {source: datatable_declarations_path}}
+    %thead
+      %tr
+        - Declaration.datatable_columns.each do |column|
+          %th{data: {name: column[:name]}}
+            = column[:label]
+            %br/
+            %input.input-small{placeholder: "meklēt kolonnā"}
+    %tbody
+#declaration_show.span4
+
+:javascript
+  $(function() {
+    new VAD.DeclarationsDatatableView({
+      el: "#declarations"
+    });
+  });
