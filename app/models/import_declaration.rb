@@ -72,6 +72,7 @@ class ImportDeclaration < ActiveRecord::Base
     self.status = 'imported'
     save!
   rescue => e
+    raise if Rails.env.test?
     self.error = "#{e.message}\n#{e.backtrace[0..2].join("\n")}"
     self.status = 'error'
     save!
