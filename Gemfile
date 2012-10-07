@@ -7,6 +7,8 @@ gem 'mysql2'
 gem 'haml-rails'
 gem 'simple_form'
 
+gem 'will_paginate', '~> 3.0'
+
 gem 'redis'
 gem 'redis-rails'
 

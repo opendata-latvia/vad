@@ -18,6 +18,13 @@ class ImportDeclaration < ActiveRecord::Base
     JSON.pretty_generate data
   end
 
+  def summary
+    head = data[1]
+    head.values_at("Deklarācijas veids", "Vārds uzvārds", "Darbavieta", "Amats").join(', ')
+  rescue
+    "Sorry - kļūda kopsavlikumā"
+  end
+
   def as_json(options = {})
     super.merge(
       :pretty_data => pretty_data
@@ -27,7 +34,9 @@ class ImportDeclaration < ActiveRecord::Base
   def self.search(params)
     relation = order('created_at desc')
     relation = relation.where(:status => params[:status]) if params[:status]
-    relation
+    params[:page] ||= 1
+    params[:per_page] ||= 50
+    relation.paginate(params.slice(:page, :per_page))
   end
 
   def self.import_all!

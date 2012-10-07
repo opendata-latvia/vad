@@ -8,7 +8,7 @@
   - %w(new error skip imported).each do |status|
     = link_to status, import_declarations_path(:status => status)
   %br/
-  = "Kopā #{@import_declarations.size} ieraksti"
+  = "Kopā #{@import_declarations.total_entries} ieraksti"
 
   %table.table.table-hover
     %thead
@@ -25,6 +25,8 @@
           %td
             %span.label{class: status_label(d.status)}= d.status
           %td
+            = d.summary
+            &nbsp;&nbsp;
             %a.action_details{href: "#"} parādīt / slēpt
             %pre.details
           %td
@@ -41,3 +43,5 @@
               .pull-left
                 &nbsp;
                 = link_to "Izdzēst", "#", :class => 'btn btn-danger action_delete'
+
+  = will_paginate @import_declarations
