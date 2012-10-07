@@ -37,6 +37,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def self.delete_imported!
+    Person.delete_all
     Declaration.delete_all
     DeclarationOtherWorkplace.delete_all
     DeclarationRealEstate.delete_all
@@ -46,6 +47,11 @@ class ImportDeclaration < ActiveRecord::Base
     DeclarationCash.delete_all
     DeclarationIncome.delete_all
     DeclarationDeal.delete_all
+    DeclarationDebt.delete_all
+    DeclarationLoan.delete_all
+    DeclarationOtherFact.delete_all
+    DeclarationRelative.delete_all
+
     update_all("status = 'new'")
   end
 
@@ -98,11 +104,11 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   private
-  
+
   def create_person
     declaration_hash = Digest::MD5.hexdigest(data[0].to_s)
 
-    if (person = Person.where(:declaration_hash => declaration_hash)).any?
+    if (person = Person.where(:declaration_hash => declaration_hash).first)
       Declaration.last.update_attributes(:person_id => person.id)
     else
       first_name, last_name = data[0]["Vārds, uzvārds"].split(/^\s*(\w+)\s*(.+)/).reject(&:blank?)

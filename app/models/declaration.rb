@@ -20,7 +20,12 @@ class Declaration < ActiveRecord::Base
     {:name => 'kind', :label => 'Veids', :data_type => :string},
     {:name => 'period_year', :label => 'Gads', :data_type => :string},
     {:name => 'workplace', :label => 'Darba vieta', :data_type => :string},
-    {:name => 'position', :label => 'Amats', :data_type => :string}
+    {:name => 'position', :label => 'Amats', :data_type => :string},
+    {:name => 'declaration_real_estates_count', :label => 'Nekust. īp. skaits', :data_type => :integer},
+    {:name => 'declaration_companies_count', :label => 'Uzņēmumu skaits', :data_type => :integer},
+    {:name => 'declaration_securities_count', :label => 'Vērtspapīru skaits', :data_type => :integer},
+    {:name => 'declaration_vehicles_count', :label => 'Transportlīdz. skaits', :data_type => :integer},
+    {:name => 'declaration_relatives_count', :label => 'Radinieku skaits', :data_type => :integer}
   ]
 
   DATATABLE_COLUMN_NAMES = DATATABLE_COLUMNS.map{|c| c[:name]}
