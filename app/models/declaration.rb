@@ -1,4 +1,5 @@
 # encoding: utf-8
+require "csv"
 
 class Declaration < ActiveRecord::Base
   has_many :other_workplaces, :class_name => "DeclarationOtherWorkplace"
@@ -130,6 +131,36 @@ class Declaration < ActiveRecord::Base
       :total_results => params[:total_results] == false ? nil : Declaration.connection.select_value(count_relation.to_sql)
     }
   end
+
+  def self.data_download(params)
+    all_pages = true
+    page = 1
+    params[:per_page] = 10000
+
+    while true
+      search_results = data_search(
+        params[:q],
+        params.slice(
+          :sort, :sort_direction, :per_page
+        ).merge(:page => page, :total_results => false)
+      )
+      result_rows = search_results[:rows]
+      data = case params[:format]
+      when 'csv'
+        csv_data = CSV.generate do |csv|
+          csv << (['full_name_with_id'] + datatable_column_names) if !all_pages || page == 1
+          result_rows.each do |row|
+            csv << (["#{row[1]} (#{row[0]})"] + row)
+          end
+        end
+        csv_data
+      end
+      yield data
+      break if !all_pages || result_rows.length == 0
+      page += 1
+    end
+  end
+
 
   private
 

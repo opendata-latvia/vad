@@ -8,6 +8,10 @@
             %br/
             %input.input-small{placeholder: "meklēt kolonnā"}
     %tbody
+  .download-data
+    %h4 Lejuplādēt datus
+    %p
+      = link_to "CSV formātā", "#", :data => {"download-path" => download_declarations_path(:format => 'csv')}, :class => "btn"
 
 :javascript
   $(function() {

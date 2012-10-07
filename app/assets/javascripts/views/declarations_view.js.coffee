@@ -48,7 +48,7 @@ class VAD.DeclarationsDatatableView extends Backbone.View
       data: aoData
       success: (json) =>
         # console.log "fnServerData success", json
-        # @updateDownloadLinks(json.queryParams)
+        @updateDownloadLinks(json.queryParams)
         $(oSettings.oInstance).trigger('xhr', oSettings)
         fnCallback(json)
       dataType: "json"
@@ -59,21 +59,22 @@ class VAD.DeclarationsDatatableView extends Backbone.View
           oSettings.oApi._fnLog( oSettings, 0, "DataTables warning: JSON data from " +
             "server could not be parsed. This is caused by a JSON formatting error." )
 
-  # updateDownloadLinks: (params) ->
-  #   delete params.q unless params.q
-  #   allPagesParams = _.clone params
-  #   delete allPagesParams.page
-  #   delete allPagesParams.per_page
-  #   delete allPagesParams.sort
-  #   delete allPagesParams.sort_direction
+  updateDownloadLinks: (params) ->
+    delete params.q unless params.q
+    allPagesParams = _.clone params
+    delete allPagesParams.page
+    delete allPagesParams.per_page
+    delete allPagesParams.sort
+    delete allPagesParams.sort_direction
 
-  #   @$("a[data-download-path]").each ->
-  #     $this = $(this)
-  #     urlParams = $.param(if $this.data("currentPage") then params else allPagesParams)
-  #     url = $this.data("downloadPath")
-  #     url += "?" + urlParams if urlParams
-  #     $this.attr "href", url
-  #   @$(".download-data").show()
+    @$("a[data-download-path]").each ->
+      $this = $(this)
+      # urlParams = $.param(if $this.data("currentPage") then params else allPagesParams)
+      urlParams = $.param allPagesParams
+      url = $this.data("downloadPath")
+      url += "?" + urlParams if urlParams
+      $this.attr "href", url
+    @$(".download-data").show()
 
   clickHeadInput: (e) =>
     # ignore click to prevent sorting
