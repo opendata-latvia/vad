@@ -102,7 +102,7 @@ class ImportDeclaration < ActiveRecord::Base
   def create_person
     declaration_hash = Digest::MD5.hexdigest(data[0].to_s)
 
-    if (person = Person.where(:declaration_hash => declaration_hash).any?)
+    if (person = Person.where(:declaration_hash => declaration_hash)).any?
       Declaration.last.update_attributes(:person_id => person.id)
     else
       first_name, last_name = data[0]["Vārds, uzvārds"].split(/^\s*(\w+)\s*(.+)/).reject(&:blank?)
