@@ -198,6 +198,8 @@ class ImportDeclaration < ActiveRecord::Base
 
   def import_companies_and_securities
     return unless companies = data[4]
+    total_companies_amount_lvl = 0
+    total_securities_amount_lvl = 0
     companies.each do |c|
       if c["Kapitāla daļu skaits"]
         registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
@@ -211,6 +213,7 @@ class ImportDeclaration < ActiveRecord::Base
           :currency => currency,
           :amount_lvl => amount_lvl
         )
+        total_companies_amount_lvl += amount_lvl||0
       else
         registration_number, legal_address = parse_legal_address c["Reģistrācijas numurs Komercreģistrā un juridiskā adrese"]
         amount, currency, amount_lvl = parse_amount(c["Summa (nominālvērtībā)"], c["Valūta"])
@@ -224,8 +227,11 @@ class ImportDeclaration < ActiveRecord::Base
           :currency => currency,
           :amount_lvl => amount_lvl
         )
+        total_securities_amount_lvl += amount_lvl||0
       end
     end
+    @declaration.update_attribute :companies_amount_lvl, total_companies_amount_lvl
+    @declaration.update_attribute :securities_amount_lvl, total_securities_amount_lvl
   end
 
   def import_vehicles
@@ -243,6 +249,8 @@ class ImportDeclaration < ActiveRecord::Base
 
   def import_cash
     return unless cash = data[6]
+    total_cash_amount_lvl = 0
+    total_bank_amount_lvl = 0
     cash.each do |c|
       if c["Skaidrās naudas uzkrājuma summa ar cipariem"]
         amount, currency, amount_lvl = parse_amount(c["Skaidrās naudas uzkrājuma summa ar cipariem"], c["Valūta"])
@@ -253,6 +261,7 @@ class ImportDeclaration < ActiveRecord::Base
           :amount_lvl => amount_lvl,
           :amount_in_words => c["Skaidrās naudas uzkrājuma summa ar vārdiem"]
         )
+        total_cash_amount_lvl += amount_lvl||0
       elsif c["Bezkaidrās naudas uzkrājuma summa"]
         registration_number, legal_address = parse_legal_address(c["Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
         amount, currency, amount_lvl = parse_amount(c["Bezkaidrās naudas uzkrājuma summa"], c["Valūta"])
@@ -265,14 +274,17 @@ class ImportDeclaration < ActiveRecord::Base
           :registration_number => registration_number,
           :legal_address => legal_address
         )
+        total_bank_amount_lvl += amount_lvl||0
       end
     end
+    @declaration.update_attribute :cash_amount_lvl, total_cash_amount_lvl
+    @declaration.update_attribute :bank_amount_lvl, total_bank_amount_lvl
   end
 
   def import_income
     return unless income = data[7]
+    total_amount_lvl = 0
     income.each do |i|
-
       source, registration_number, legal_address = parse_source(i["Ienākumu gūšanas vieta (avots) – juridiskās personas nosaukums, reģistrācijas numurs komercreģistrā un juridiskā adrese; fiziskās personas vārds un uzvārds"])
       amount, currency, amount_lvl = parse_amount(i["Summa"], i["Valūta"])
       @declaration.income.create!(
@@ -284,11 +296,14 @@ class ImportDeclaration < ActiveRecord::Base
         :currency => currency,
         :amount_lvl => amount_lvl
       )
+      total_amount_lvl += amount_lvl||0
     end
+    @declaration.update_attribute :income_amount_lvl, total_amount_lvl
   end
 
   def import_deals
     return unless deals = data[8]
+    total_amount_lvl = 0
     deals.each do |d|
       amount, currency, amount_lvl = parse_amount(d["Summa"], d["Valūta"])
       @declaration.deals.create!(
@@ -297,17 +312,21 @@ class ImportDeclaration < ActiveRecord::Base
         :currency => currency,
         :amount_lvl => amount_lvl
       )
+      total_amount_lvl += amount_lvl||0
     end
+    @declaration.update_attribute :deals_amount_lvl, total_amount_lvl
   end
 
   def import_debts
     return unless debts = data[9]
+    total_amount_lvl = 0
     debts.each do |d|
       @declaration.debts.create!(
         if d["Publicējamā daļa"]
           { :description => d["Publicējamā daļa"] }
         else
           amount, currency, amount_lvl = parse_amount(d["Summa ar cipariem"], d["Valūta"])
+          total_amount_lvl += amount_lvl
           {
             :amount => amount,
             :currency => currency,
@@ -317,16 +336,19 @@ class ImportDeclaration < ActiveRecord::Base
         end
       )
     end
+    @declaration.update_attribute :debts_amount_lvl, total_amount_lvl
   end
 
   def import_loans
     return unless loans = data[10]
+    total_amount_lvl = 0
     loans.each do |l|
       @declaration.loans.create!(
         if l["Publicējamā daļa"]
           { :description => l["Publicējamā daļa"] }
         else
           amount, currency, amount_lvl = parse_amount(l["Summa ar cipariem"], l["Valūta"])
+          total_amount_lvl += amount_lvl||0
           {
             :amount => amount,
             :currency => currency,
@@ -336,6 +358,7 @@ class ImportDeclaration < ActiveRecord::Base
         end
       )
     end
+    @declaration.update_attribute :loans_amount_lvl, total_amount_lvl
   end
 
   def import_other_facts
@@ -349,12 +372,15 @@ class ImportDeclaration < ActiveRecord::Base
 
   def import_relatives
     return unless relatives = data[12]
+    children_count = 0
     relatives.each do |r|
       @declaration.relatives.create!(
         :full_name => r["Vārds, uzvārds"],
-        :kind => r["Radniecība"]
+        :kind => (kind = r["Radniecība"])
       )
+      children_count += 1 if kind =~ /dēls|meita/i
     end
+    @declaration.update_attribute :declaration_children_count, children_count
   end
 
 end

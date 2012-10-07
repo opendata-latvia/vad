@@ -23,10 +23,21 @@ class Declaration < ActiveRecord::Base
     {:name => 'position', :label => 'Amats', :data_type => :string},
     {:name => 'declaration_real_estates_count', :label => 'Nekust. īp. skaits', :data_type => :integer},
     {:name => 'declaration_companies_count', :label => 'Uzņēmumu skaits', :data_type => :integer},
+    {:name => 'companies_amount_lvl', :label => 'Uzņēmumu vērt. Ls', :data_type => :integer},
     {:name => 'declaration_securities_count', :label => 'Vērtspapīru skaits', :data_type => :integer},
+    {:name => 'securities_amount_lvl', :label => 'Vērtspapīru vērt. Ls', :data_type => :integer},
     {:name => 'declaration_vehicles_count', :label => 'Transportlīdz. skaits', :data_type => :integer},
-    {:name => 'declaration_relatives_count', :label => 'Radinieku skaits', :data_type => :integer}
+    {:name => 'cash_amount_lvl', :label => 'Skaidr. naudas uzkr.', :data_type => :decimal},
+    {:name => 'bank_amount_lvl', :label => 'Bezsk. naudas uzkr.', :data_type => :decimal},
+    {:name => 'income_amount_lvl', :label => 'Ieņēmumi Ls', :data_type => :decimal},
+    {:name => 'deals_amount_lvl', :label => 'Darījumi Ls', :data_type => :decimal},
+    {:name => 'debts_amount_lvl', :label => 'Parādi Ls', :data_type => :decimal},
+    {:name => 'loans_amount_lvl', :label => 'Aizdevumi Ls', :data_type => :decimal},
+    {:name => 'declaration_relatives_count', :label => 'Radinieku skaits', :data_type => :integer},
+    {:name => 'declaration_children_count', :label => 'Bērnu skaits', :data_type => :integer}
   ]
+
+
 
   DATATABLE_COLUMN_NAMES = DATATABLE_COLUMNS.map{|c| c[:name]}
 
