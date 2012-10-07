@@ -121,7 +121,9 @@ class ImportDeclaration < ActiveRecord::Base
     'EUR' => 0.702804,
     'USD' => 0.544000,
     'GBP' => 0.875000,
-    'RUB'  => 0.017500
+    'RUB' => 0.017500,
+    'CHF' => 0.580000,
+    'BYR' => 0.063400
   }
 
   def convert_amount_lvl(amount, currency)
