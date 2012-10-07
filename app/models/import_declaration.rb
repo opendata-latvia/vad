@@ -50,6 +50,9 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import!
+    unless "f80ce7b04d33af0cd25def7819a45f06" == Digest::MD5.hexdigest(data[1]["Sadaļas"].to_s)
+      raise "Sorry, bet šādu deklarācijas veidu mēs nevaram apstrādāt"
+    end
     import_head
     import_other_workplaces
     import_real_estates
