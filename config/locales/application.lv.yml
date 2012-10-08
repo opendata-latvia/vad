@@ -22,3 +22,6 @@ lv:
 
   datetime:
     ago: "pirms %{distance}"
+
+  unauthorized:
+    default: "Jums nav tiesību piekļūt šai lapai."

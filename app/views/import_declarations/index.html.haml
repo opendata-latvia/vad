@@ -1,7 +1,9 @@
 #import_declarations.span12
   .row-fluid
-    .span2= button_to "Importēt visus", import_all_import_declarations_path, :class => 'btn btn-primary'
-    .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path, :class => 'btn btn-danger'
+    - if can? :import, ImportDeclaration
+      .span2= button_to "Importēt visus", import_all_import_declarations_path, :class => 'btn btn-primary'
+    - if can? :destroy, Declaration
+      .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path, :class => 'btn btn-danger'
 
   .row-fluid
     .span12
@@ -42,7 +44,7 @@
               - if d.new? || d.error?
                 .pull-left
                   = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary pull-left'
-              - if d.error?
+              - if d.error? && can?(:destroy, d)
                 .pull-left
                   &nbsp;
                   = link_to "Izdzēst", "#", :class => 'btn btn-danger action_delete'

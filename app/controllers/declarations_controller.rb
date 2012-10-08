@@ -1,9 +1,12 @@
 class DeclarationsController < ApplicationController
-  def index
+  before_filter :authenticate_user!
 
+  def index
+    authorize! :read, Declaration
   end
 
   def datatable
+    authorize! :read, Declaration
     respond_to do |format|
       format.json do
         render :json => DeclarationsDatatable.new(view_context)
@@ -12,6 +15,7 @@ class DeclarationsController < ApplicationController
   end
 
   def download
+    authorize! :read, Declaration
     case format = params[:format]
     when 'csv'
       response.sending_file = true

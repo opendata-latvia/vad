@@ -1,5 +1,5 @@
 Vad::Application.routes.draw do
-  root :to => "import_declarations#index"
+  root :to => "home#index"
 
   devise_for :users, :controllers => {
     :registrations => 'users/registrations'
