@@ -66,6 +66,8 @@ module Vad
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
     end
 
+    config.cache_store = :redis_store, {:namespace => "vad:#{Rails.env}"}
+
     require "settings"
 
     if Settings['mailer'] && Settings.mailer['smtp']
