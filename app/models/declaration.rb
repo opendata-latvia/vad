@@ -116,7 +116,7 @@ class Declaration < ActiveRecord::Base
     count_relation = results_relation.clone.project('COUNT(*)')
     results_relation.project(*datatable_column_names.map{|c|
       if c == 'full_name_with_id'
-        "CONCAT(full_name, ' (', person_id, ')') AS full_name_with_id"
+        "CONCAT(full_name, ' (', COALESCE(person_id, ''), ')') AS full_name_with_id"
       else
         c
       end
