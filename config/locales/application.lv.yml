@@ -1,0 +1,24 @@
+lv:
+  nav:
+    sign_in: "Pieslēgties"
+    sign_out: "Atslēgties"
+    my_profile: "Mans profils"
+    edit_profile: "Mainīt profilu"
+
+    or: "vai"
+    back: "atpakaļ"
+    more: "Vairāk"
+    more_disable_with: "Ielādē..."
+
+  actions:
+    update: "Saglabāt"
+    edit: "Mainīt"
+    delete: "Dzēst"
+    delete_disable_with: "Dzēš..."
+    search: "Meklēt"
+    import: "Importēt"
+    start_import: "Sākt importu"
+    import_disable_with: "Importē..."
+
+  datetime:
+    ago: "pirms %{distance}"

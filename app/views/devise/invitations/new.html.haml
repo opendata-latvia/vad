@@ -1,0 +1,10 @@
+.span6.offset3
+
+  %h2= t "users.send_invitation"
+
+  = simple_form_for(resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post, :class => 'well form-horizontal'}) do |f|
+    .inputs
+      = f.input :email, :required => true, :autofocus => true, :hint => "Ievadiet e-pastu personai, kuru vēlaties nosūtīt ielūgumu"
+
+    .controls
+      = f.button :submit, t("users.send_invitation"), :class => 'btn-primary'

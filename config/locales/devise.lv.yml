@@ -1,0 +1,62 @@
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
+lv:
+  errors:
+    messages:
+      expired: 'derīgums beidzies, lūdzu piesakieties jaunam'
+      not_found: 'netika atrasts'
+      already_confirmed: 'ir jau apstiprināts, lūdzu mēģiniet pieslēgties'
+      not_locked: 'netika nobloķēts'
+      not_saved:
+        one: '%{resource} netika saglabāts 1 kļūdas dēļ:'
+        other: '%{resource} netika saglabāts %{count} kļūdu dēl:'
+
+  devise:
+    failure:
+      already_authenticated: 'Jūs jau esat pieslēdzies.'
+      unauthenticated: 'Jums ir jāpieslēdzas vai jāreģistrējas, lai turpinātu.'
+      unconfirmed: 'Jums ir jāapstiprina reģistrācijas e-pasts, lai turpinātu.'
+      locked: 'Jūsu lietotājs ir nobloķēts.'
+      invalid: 'Nepareizs epasts vai parole.'
+      invalid_token: 'Nepareiza autentifikācijas atslēga.'
+      timeout: 'Jūsu sesijas laiks ir beidzies. Lūdzu pieslēdzieties vēlreiz, lai turpinātu.'
+      inactive: 'Jūsu lietotajs vēl nav aktivizēts.'
+    sessions:
+      signed_in: ''
+      signed_out: ''
+    passwords:
+      send_instructions: 'Pāris minūšu laikā uz Jūsu e-pastu tiks nosūtīts apraksts, kā nomainīt Jūsu paroli.'
+      updated: 'Jūsu parole ir veiksmīgi nomainīta. Jūs esat pieslēdzies.'
+      updated_not_active: 'Jūsu parole ir veiksmīgi nomainīta.'
+      send_paranoid_instructions: 'Ja Jūsu parole eksistē mūsu datubāzē, tad jums tiks nosūtīts paroles atjaunošanas apraksts uz e-pastu.'
+    confirmations:
+      send_instructions: 'Pāris minūšu laikā uz Jūsu e-pastu tiks nosūtīts apraksts, kā apstiprināt Jūsu lietotāju.'
+      send_paranoid_instructions: 'Ja Jūsu parole eksistē mūsu datubāzē, tad pāris minūšu laikā uz Jūsu epastu tiks nosūtīts apraksts, kā apstiprināt Jūsu lietotāju.'
+      confirmed: 'Jūsu lietotājs ir veiksmīgi apstiprināts. Jūs esat pieslēdzies.'
+    registrations:
+      signed_up: 'Laipni lūdzam! Jūs esat veiksmīgi reģistrējies.'
+      signed_up_but_unconfirmed: 'Jums ir nosūtīts e-pasts ar reģistrācijas apstiprinājuma saiti. Lūdzu atveriet šo saiti, lai aktivizētu Jūsu lietotāju.'
+      signed_up_but_inactive: 'Jūs esat veiksmīgi reģistrējies. Tomēr Jūs neesat pieslēdzies, jo Jūsu lietotājs vēl nav aktivizēts.'
+      signed_up_but_locked: 'Jūs esat veiksmīgi reģistrējies. Tomēr Jūs neesat pieslēdzies, jo Jūsu lietotājs ir nobloķēts.'
+      updated: ''
+      update_needs_confirmation: 'Jūsu lietotāja izmaiņas ir veiksmīgi saglabātas, bet mums ir jāpārbauda Jūsu jaunā e-pasta adrese. Lūdzu pārbaudiet Jūsu e-pastu un uzklišķiniet uz apstiprinājuma saites, lai pabeigtu Jūsu jaunās e-pasta adreses apstiprināšanu.'
+      destroyed: 'Uz redzēšanos! Jūsu lietotājs ir veiksmīgi dzēsts. Ceram Jūs atkal redzēt drīzumā.'
+    unlocks:
+      send_instructions: 'Pāris minūšu laikā uz Jūsu e-pastu tiks nosūtīts apraksts, kā atbloķēt Jūsu lietotāju.'
+      unlocked: 'Jūsu lietotājs ir veiksmīgi atbloķēts. Jūs esat pieslēdzies.'
+      send_paranoid_instructions: 'Ja Jūsu parole eksistē mūsu datubāzē, tad pāris minūšu laikā uz Jūsu epastu tiks nosūtīts apraksts, kā atbloķēt jūsu lietotāju.'
+    omniauth_callbacks:
+      success: 'Veiksmīgi autorizēts ar %{kind} lietotāju.'
+      failure: 'Neizdevās autorizet ar %{kind} lietotāju dēļ sekojoša iemesla: "%{reason}".'
+      destroyed: 'Veiksmīgi noņemta %{kind} autorizācija.'
+    mailer:
+      confirmation_instructions:
+        subject: 'Apstiprināšanas apraksts'
+      reset_password_instructions:
+        subject: 'Paroles nomainīšanas apraksts'
+      unlock_instructions:
+        subject: 'Atbloķēšanas apraksts'
+    invitations:
+      send_instructions: 'Ielūguma e-pasts tika nosūtīts uz %{email}.'
+      invitation_token_invalid: 'Ielūguma informācija nav derīga!'
+      updated: 'Jūs esat veiksmīgi uzstādījis paroli un esat pieslēdzies.'

@@ -1,0 +1,10 @@
+.span6.offset3
+
+  %h2= t "users.forgot_password"
+
+  = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => {:method => :post, :class => 'well form-horizontal'}) do |f|
+    .inputs
+      = f.input :email, :required => true, :autofocus => true
+
+    .controls
+      = f.button :submit, t("users.send_reset_password_instructions"), :class => 'btn-primary'

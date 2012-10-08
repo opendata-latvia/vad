@@ -1,0 +1,3 @@
+%p= "Sveicināti #{@resource.email}!"
+%p Jūs varat apstiprināt jūsu e-pastu uzklikšķinot uz pievienoto saiti:
+%p= link_to 'Apstiprināt e-pastu', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)

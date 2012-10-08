@@ -31,7 +31,7 @@ module Vad
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    config.i18n.default_locale = :lv
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -64,6 +64,16 @@ module Vad
       g.integration_tool :rspec
       g.template_engine :haml
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
+    end
+
+    require "settings"
+
+    if Settings['mailer'] && Settings.mailer['smtp']
+      config.action_mailer.smtp_settings = Settings.mailer['smtp'].symbolize_keys
+      config.action_mailer.delivery_method = :smtp
+    end
+    if Settings['default_url_options']
+      config.action_mailer.default_url_options = Settings['default_url_options'].symbolize_keys
     end
 
   end

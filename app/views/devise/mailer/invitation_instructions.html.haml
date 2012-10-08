@@ -1,0 +1,6 @@
+%p= "Sveicināti #{@resource.email}!"
+%p= "Jūs esat ielūgts kļūt par #{root_url} lietotāju, Jūs varat akceptēt ielūgumu, uzklikšķinot uz pievienot saiti:"
+%p= link_to 'Akceptēt ielūgumu', accept_invitation_url(@resource, :invitation_token => @resource.invitation_token)
+
+%p
+  Ja Jūs nevēlaties akceptēt šo ielūgumu, tad lūdzu ignorējiet šo ielūgumu.

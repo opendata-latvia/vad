@@ -1,0 +1,4 @@
+%p= "Sveicināti #{@resource.name}!"
+%p Jūsu lietotājs ir bloķēts dēļ daudziem neveiksmīgiem pieslēgšanās mēģinājumiem.
+%p Uzklikšķiniet uz pievienotās saites, lai atbloķētu Jūsu lietotāju:
+%p= link_to 'Atbloķēt lietotāju', unlock_url(@resource, :unlock_token => @resource.unlock_token)

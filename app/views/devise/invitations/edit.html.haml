@@ -1,0 +1,13 @@
+.span6.offset3
+
+  %h2= t "users.set_password"
+
+  = simple_form_for(resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :put, :class => 'well form-horizontal'}) do |f|
+    = f.input :invitation_token, :as => :hidden
+    = f.full_error :invitation_token
+    .inputs
+      = f.input :password, :required => true
+      = f.input :password_confirmation, :required => true
+
+    .controls
+      = f.button :submit, t("users.set_password"), :class => 'btn-primary'

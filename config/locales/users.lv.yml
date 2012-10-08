@@ -1,0 +1,33 @@
+lv:
+  users:
+    sign_up: "Reģistrēties"
+    edit_user: "Mainīt paroli"
+    cancel_user: "Dzēst lietotāju"
+    sign_in: "Pieslēgties"
+    forgot_password: "Aizmirsāt paroli?"
+    send_reset_password_instructions: "Atsūtīt uz e-pastu paroles nomaiņas aprakstu"
+    change_password: "Nomainīt paroli"
+    set_password: "Uzstādīt paroli"
+    send_invitation: "Nosūtīt ielūgumu"
+
+  activerecord:
+    models:
+      user: "Lietotājs"
+    attributes:
+      user:
+        email: "E-pasts"
+        password: "Parole"
+        password_confirmation: "Parole atkārtoti"
+        current_password: "Patreizējā parole"
+        new_password: "Jaunā parole"
+        new_password_confirmation: "Jaunā parole atkārtoti"
+        remember_me: "Atcerēties mani"
+
+  simple_form:
+    hints:
+      user:
+        new:
+          password: "vismaz 6 simboli"
+        edit:
+          password: "atstājiet tukšu, ja nevēlaties mainīt"
+          current_password: "ievadiet patreizējo paroli, lai apstiprinātu izmaiņas"
