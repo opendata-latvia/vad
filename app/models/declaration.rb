@@ -135,7 +135,7 @@ class Declaration < ActiveRecord::Base
   def self.data_download(params)
     all_pages = true
     page = 1
-    params[:per_page] = 10000
+    params[:per_page] = 5000
 
     while true
       search_results = data_search(

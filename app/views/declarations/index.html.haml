@@ -4,9 +4,9 @@
       %tr
         - Declaration.datatable_columns.each do |column|
           %th{data: {name: column[:name]}}
-            = column[:label]
-            %br/
-            %input.input-small{placeholder: "meklēt kolonnā"}
+            .column_label= column[:label]
+            .column_filter
+              %input.input-small{placeholder: "meklēt kolonnā"}
     %tbody
   .download-data
     %h4 Lejuplādēt datus

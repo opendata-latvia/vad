@@ -16,5 +16,7 @@
 //= require backbone
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
+//= require dataTables/extras/FixedHeader
 //= require vad
+//= require fixed_header_patches
 //= require_tree .

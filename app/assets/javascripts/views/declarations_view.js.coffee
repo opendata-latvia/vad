@@ -28,15 +28,24 @@ class VAD.DeclarationsDatatableView extends Backbone.View
     # to prevent default th click behaviour
     $dataTable.find("thead th input").click @clickHeadInput
 
+    $.extend $.fn.dataTableExt.oStdClasses,
+      "sSortAsc": "header headerSortDown"
+      "sSortDesc": "header headerSortUp"
+      "sSortable": "header"
+
     @dataTable = $dataTable.dataTable
-      sDom: "<'row-fluid'<'span4'l><'span8'f>r>t<'row-fluid'<'span5'i><'span7'p>>"
-      sScrollX: "100%"
+      # sDom: "<'row-fluid'<'span4'l><'span8'f>r>t<'row-fluid'<'span5'i><'span7'p>>"
+      sDom: "<'row-fluid'<'span4'l>r>t<'row-fluid'<'span5'i><'span7'p>>"
+      # sScrollX: "100%"
       bProcessing: true
       bServerSide: true
       sAjaxSource: $dataTable.data "source"
       fnServerData: @fnServerData
       sPaginationType: "bootstrap"
       oLanguage: @translations
+
+    @fixedHeader = new FixedHeader @dataTable,
+      offsetTop: $(".navbar-fixed-top").height()
 
     # do not focus on table headers when moving with tabs between column filters
     @$("thead th").attr "tabindex", "-1"

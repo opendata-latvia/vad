@@ -13,7 +13,7 @@
   %body
     .navbar.navbar-fixed-top
       .navbar-inner
-        .container
+        .container-fluid
           %a.btn.btn-navbar{data: {toggle: "collapse", target: ".nav-collapse"}}
             %span.icon-bar
             %span.icon-bar
@@ -25,12 +25,12 @@
               %li{:class => top_menu_class(DeclarationsController)}= link_to "Deklarācijas", declarations_path
             %ul.nav.pull-right
 
-    .container
+    .container-fluid
       - [:notice, :alert].each do |name|
         - if (message = flash[name])
           .alert{class: "alert-#{name == :notice ? "success" : "error"}"}
             %a.close{data: {dismiss: "alert"}} &times;
             = simple_format message
-      .row
+      .row-fluid
         = yield
     %footer.footer

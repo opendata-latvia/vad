@@ -1,47 +1,50 @@
-#import_declarations
-  .row
+#import_declarations.span12
+  .row-fluid
     .span2= button_to "Importēt visus", import_all_import_declarations_path, :class => 'btn btn-primary'
     .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path, :class => 'btn btn-danger'
 
-  = link_to "Visi statusi", import_declarations_path
-  vai tikai ar statusu
-  - %w(new error skip imported).each do |status|
-    = link_to status, import_declarations_path(:status => status)
-  %br/
-  = "Kopā #{@import_declarations.total_entries} ieraksti"
+  .row-fluid
+    .span12
+      = link_to "Visi statusi", import_declarations_path
+      vai tikai ar statusu
+      - %w(new error skip imported).each do |status|
+        = link_to status, import_declarations_path(:status => status)
+      %br/
+      = "Kopā #{@import_declarations.total_entries} ieraksti"
 
-  %table.table.table-hover
-    %thead
-      %tr
-        %th.span1 Izveidots
-        %th.span1 Statuss
-        %th.span5 Dati
-        %th.span3 Kļūdas
-        %th.span2
-    %tbody
-      - @import_declarations.each do |d|
-        %tr{:data => {:id => d.id}}
-          %td= d.created_at.to_s(:db)
-          %td
-            %span.label{class: status_label(d.status)}= d.status
-          %td
-            = d.summary
-            &nbsp;&nbsp;
-            %a.action_details{href: "#"} parādīt / slēpt
-            %pre.details
-          %td
-            - if d.error.present?
-              = d.error.split("\n").first
+  .row-fluid
+    %table.table.table-hover
+      %thead
+        %tr
+          %th.span1 Izveidots
+          %th.span1 Statuss
+          %th.span5 Dati
+          %th.span3 Kļūdas
+          %th.span2
+      %tbody
+        - @import_declarations.each do |d|
+          %tr{:data => {:id => d.id}}
+            %td= d.created_at.to_s(:db)
+            %td
+              %span.label{class: status_label(d.status)}= d.status
+            %td
+              = d.summary
               &nbsp;&nbsp;
               %a.action_details{href: "#"} parādīt / slēpt
-              %pre.details= d.error
-          %td
-            - if d.new? || d.error?
-              .pull-left
-                = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary pull-left'
-            - if d.error?
-              .pull-left
-                &nbsp;
-                = link_to "Izdzēst", "#", :class => 'btn btn-danger action_delete'
+              %pre.details
+            %td
+              - if d.error.present?
+                = d.error.split("\n").first
+                &nbsp;&nbsp;
+                %a.action_details{href: "#"} parādīt / slēpt
+                %pre.details= d.error
+            %td
+              - if d.new? || d.error?
+                .pull-left
+                  = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary pull-left'
+              - if d.error?
+                .pull-left
+                  &nbsp;
+                  = link_to "Izdzēst", "#", :class => 'btn btn-danger action_delete'
 
-  = will_paginate @import_declarations
+    = will_paginate @import_declarations

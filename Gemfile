@@ -26,8 +26,8 @@ group :assets do
   gem 'therubyracer', :platform => :ruby
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'twitter-bootstrap-rails'
-  gem 'jquery-datatables-rails', '1.9.1.3'
+  gem 'twitter-bootstrap-rails', '~> 2.1.3'
+  gem 'jquery-datatables-rails', '~> 1.11.1'
 
   gem 'quiet_assets', :group => :development
 end
@@ -46,6 +46,7 @@ group :development do
   gem 'rb-fsevent'
   gem 'growl'
   gem 'guard-rspec'
+  gem 'guard-livereload'
 
   gem 'thin' # to avoid webrick warnings about missing content-length
   gem 'sprinkle', :require => false
