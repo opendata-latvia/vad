@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_inviter!
-    authorize! :invite, User
+    if authorize! :invite, User
+      current_user
+    end
   end
 
 end
