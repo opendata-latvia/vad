@@ -45,6 +45,8 @@ class VAD.DeclarationsDatatableView extends Backbone.View
       oLanguage: @translations
 
     @fixedHeader = new FixedHeader @dataTable,
+      top: true
+      left: true
       offsetTop: $(".navbar-fixed-top").height()
 
     # do not focus on table headers when moving with tabs between column filters

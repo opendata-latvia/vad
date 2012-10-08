@@ -16,6 +16,7 @@ class Declaration < ActiveRecord::Base
   has_many :relatives, :class_name => "DeclarationRelative"
 
   DATATABLE_COLUMNS = [
+    {:name => 'full_name_with_id', :label => 'Vārds, Uzvārds (ID)', :data_type => :string},
     {:name => 'person_id', :label => 'Personas ID', :data_type => :integer},
     {:name => 'full_name', :label => 'Vārds, Uzvārds', :data_type => :string},
     {:name => 'kind', :label => 'Veids', :data_type => :string},
@@ -113,10 +114,20 @@ class Declaration < ActiveRecord::Base
     end
 
     count_relation = results_relation.clone.project('COUNT(*)')
-    results_relation.project(*datatable_column_names)
+    results_relation.project(*datatable_column_names.map{|c|
+      if c == 'full_name_with_id'
+        "CONCAT(full_name, ' (', person_id, ')') AS full_name_with_id"
+      else
+        c
+      end
+    })
 
     if column = datatable_column_names.detect{|name| name == params[:sort]}
-      results_relation.order "#{column} #{params[:sort_direction] || 'asc'}"
+      if column == 'full_name_with_id'
+        results_relation.order "full_name #{params[:sort_direction] || 'asc'}, person_id #{params[:sort_direction] || 'asc'}"
+      else
+        results_relation.order "#{column} #{params[:sort_direction] || 'asc'}"
+      end
     end
 
     page = (params[:page] || 1).to_i
@@ -148,9 +159,9 @@ class Declaration < ActiveRecord::Base
       data = case params[:format]
       when 'csv'
         csv_data = CSV.generate do |csv|
-          csv << (['full_name_with_id'] + datatable_column_names) if !all_pages || page == 1
+          csv << datatable_column_names if !all_pages || page == 1
           result_rows.each do |row|
-            csv << (["#{row[1]} (#{row[0]})"] + row)
+            csv << row
           end
         end
         csv_data
