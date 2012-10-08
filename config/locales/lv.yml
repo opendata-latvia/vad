@@ -206,6 +206,10 @@ lv:
       long: ! '%Y. gada %e. %B, %H:%M:%S'
       short: ! '%d.%m.%Y., %H:%M'
     pm: pēcpusdiena
+  will_paginate:
+    previous_label: "← Iepriekšējie"
+    next_label: "Nākošie →"
+    page_gap: "..."
   # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:
     errors:
