@@ -84,7 +84,7 @@ class ImportDeclaration < ActiveRecord::Base
     import_other_facts
     import_relatives
 
-    create_person
+    assign_person_to_declaration
 
     self.error = nil
     self.status = 'imported'
@@ -117,21 +117,15 @@ class ImportDeclaration < ActiveRecord::Base
 
   private
 
-  def create_person
-    declaration_hash = Digest::MD5.hexdigest(data[0].to_s)
-
-    if (person = Person.where(:declaration_hash => declaration_hash).first)
-      Declaration.last.update_attributes(:person_id => person.id)
-    else
-      first_name, last_name = data[0]["Vārds, uzvārds"].split(/^\s*(\w+)\s*(.+)/).reject(&:blank?)
-      person = Person.create!(
-        :full_name => data[0]["Vārds, uzvārds"],
-        :first_name => first_name,
-        :last_name => last_name,
-        :declaration_hash => declaration_hash
-      )
-      Declaration.last.update_attributes(:person_id => person.id)
-    end
+  def assign_person_to_declaration
+    first_name, last_name = data[0]["Vārds, uzvārds"].split(/^\s*(\w+)\s*(.+)/).reject(&:blank?)
+    person = Person.find_or_create_by_declaration_hash(
+      :full_name => data[0]["Vārds, uzvārds"],
+      :first_name => first_name,
+      :last_name => last_name,
+      :declaration_hash => Digest::MD5.hexdigest(data[0].to_s)
+    )
+    Declaration.last.update_attributes(:person_id => person.id)
   end
 
   def parse_date(string)
