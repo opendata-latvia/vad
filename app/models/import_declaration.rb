@@ -106,7 +106,7 @@ class ImportDeclaration < ActiveRecord::Base
     @declaration = Declaration.new(
       :kind => kind,
       :period_year => period_year,
-      :full_name => head["Vārds uzvārds"],
+      :full_name => head["Vārds uzvārds"] || head["Vārds, uzvārds"],
       :workplace => head["Darbavieta"],
       :position => head["Amats"],
       :submitted_on => parse_date(head["Iesniegta VID"]),
