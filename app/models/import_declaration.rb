@@ -20,7 +20,7 @@ class ImportDeclaration < ActiveRecord::Base
 
   def summary
     head = data[1]
-    head.values_at("Deklarācijas veids", "Vārds uzvārds", "Darbavieta", "Amats").join(', ')
+    head.values_at("Deklarācijas veids", "Vārds, uzvārds", "Darbavieta", "Valsts amatpersonas amats").join(', ')
   rescue
     "Sorry - kļūda kopsavlikumā"
   end
@@ -108,7 +108,7 @@ class ImportDeclaration < ActiveRecord::Base
       :period_year => period_year,
       :full_name => head["Vārds uzvārds"] || head["Vārds, uzvārds"],
       :workplace => head["Darbavieta"],
-      :position => head["Amats"],
+      :position => head["Amats"] || head["Valsts amatpersonas amats"],
       :submitted_on => parse_date(head["Iesniegta VID"]),
       :published_on => parse_date(head["Publicēta"])
     )
