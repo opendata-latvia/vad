@@ -31,12 +31,16 @@ class ImportDeclarationsController < ApplicationController
     result = if ImportDeclaration.find_by_md5_and_project(md5, project)
       'IN'
     else
-      ImportDeclaration.create(
-        data: params[:data],
-        md5: md5,
-        project: project
-      )
-      'OK'
+      if (data_json = (JSON.parse(params[:data]) rescue nil)) && data_json['sections'].present?
+        ImportDeclaration.create(
+          data: params[:data],
+          md5: md5,
+          project: project
+        )
+        'OK'
+      else
+        'ERROR'
+      end
     end
     response.headers['Access-Control-Allow-Origin'] = '*'
     render text: result

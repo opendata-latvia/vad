@@ -32,7 +32,9 @@ class ImportDeclaration < ActiveRecord::Base
 
   def self.search(params)
     relation = order('created_at desc')
-    relation = relation.where(:status => params[:status]) if params[:status]
+    [:status, :project].each do |attr|
+      relation = relation.where(attr.to_sym => params[attr]) if params[attr]
+    end
     params[:page] ||= 1
     params[:per_page] ||= 50
     relation.paginate(params.slice(:page, :per_page))
