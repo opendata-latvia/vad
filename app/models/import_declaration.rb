@@ -173,7 +173,13 @@ class ImportDeclaration < ActiveRecord::Base
     'NZD' => 0.702804 / 1.62230, # 0.446000,
     'CAD' => 0.702804 / 1.47170, # 0.551000,
     'SEK' => 0.702804 / 9.33450, # 0.081500,
-    'CYP' => 0.702804 / 0.585274 #1.18998
+    'CYP' => 0.702804 / 0.585274, #1.18998
+    'DKK' => 0.702804 / 7.43820,
+    'TRY' => 0.702804 / 3.40580,
+    'MDL' => 0.702804 / 21.9058444,
+    '-' => nil,
+    'EEK' => nil,
+    'NLG' => nil
   }
 
   RATES_EUR = {
@@ -191,17 +197,29 @@ class ImportDeclaration < ActiveRecord::Base
     'NZD' => 1.62230, # 0.446000,
     'CAD' => 1.47170, # 0.551000,
     'SEK' => 9.33450, # 0.081500,
-    'CYP' => 0.585274 #1.18998
+    'CYP' => 0.585274, #1.18998,
+    'DKK' => 7.43820,
+    'TRY' => 3.40580,
+    'MDL' => 21.9058444,
+    '-' => nil,
+    'EEK' => nil,
+    'NLG' => nil
   }
 
   def convert_amount_lvl(amount, currency)
-    raise ArgumentError, "trūkst #{currency} valūtas LVL kurss" unless rate = RATES_LVL[currency]
-    amount.to_f * rate
+    if rate = RATES_LVL[currency]
+      amount.to_f * rate
+    elsif !RATES_LVL.key?(currency)
+      raise ArgumentError, "trūkst #{currency} valūtas LVL kurss"
+    end
   end
 
   def convert_amount_eur(amount, currency)
-    raise ArgumentError, "trūkst #{currency} valūtas EUR kurss" unless rate = RATES_EUR[currency]
-    amount.to_f / rate
+    if rate = RATES_EUR[currency]
+      amount.to_f / rate
+    elsif !RATES_EUR.key?(currency)
+      raise ArgumentError, "trūkst #{currency} valūtas EUR kurss"
+    end
   end
 
   # return [amount, currency, amount_lvl, amount_eur]
