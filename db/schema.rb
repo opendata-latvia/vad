@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121008124604) do
+ActiveRecord::Schema.define(:version => 20161029085459) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -187,7 +187,11 @@ ActiveRecord::Schema.define(:version => 20121008124604) do
     t.timestamp "created_at",                    :null => false
     t.datetime  "updated_at"
     t.text      "error"
+    t.string    "project"
+    t.string    "source_id"
   end
+
+  add_index "import_declarations", ["source_id"], :name => "index_import_declarations_on_source_id"
 
   create_table "people", :force => true do |t|
     t.string   "full_name"

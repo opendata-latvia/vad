@@ -19,8 +19,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def summary
-    head = data[1]
-    head.values_at("Deklarācijas veids", "Vārds, uzvārds", "Darbavieta", "Valsts amatpersonas amats").join(', ')
+    data.values_at("type", "name", "workplace", "workplace_role").join(', ')
   rescue
     "Sorry - kļūda kopsavlikumā"
   end

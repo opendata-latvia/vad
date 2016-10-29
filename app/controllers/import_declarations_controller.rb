@@ -1,5 +1,5 @@
 class ImportDeclarationsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: :create
 
   def index
     authorize! :read, ImportDeclaration
@@ -23,6 +23,23 @@ class ImportDeclarationsController < ApplicationController
     authorize! :destroy, Declaration
     ImportDeclaration.delete_imported!
     redirect_to :action => :index
+  end
+
+  def create
+    source_id = params[:id].presence
+    project = (params[:project] || params[:collection]).presence
+    result = if source_id && ImportDeclaration.find_by_source_id_and_project(source_id, project)
+      'IN'
+    else
+      ImportDeclaration.create(
+        data: params[:data],
+        project: project,
+        source_id: source_id
+      )
+      'OK'
+    end
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    render text: result
   end
 
   def show

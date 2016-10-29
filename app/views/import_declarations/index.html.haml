@@ -20,8 +20,9 @@
         %tr
           %th.span1 Izveidots
           %th.span1 Statuss
+          %th.span1 Projekts
           %th.span5 Dati
-          %th.span3 Kļūdas
+          %th.span2 Kļūdas
           %th.span2
       %tbody
         - @import_declarations.each do |d|
@@ -29,6 +30,8 @@
             %td= d.created_at.to_s(:db)
             %td
               %span.label{class: status_label(d.status)}= d.status
+            %td
+              = d.project
             %td
               = d.summary
               &nbsp;&nbsp;
