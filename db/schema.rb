@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161029095104) do
+ActiveRecord::Schema.define(:version => 20161029130027) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.string   "legal_address"
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
   create_table "declaration_companies", :force => true do |t|
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.decimal  "amount_lvl",          :precision => 15, :scale => 2
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
   create_table "declaration_deals", :force => true do |t|
@@ -48,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.decimal  "amount_lvl",     :precision => 15, :scale => 2
     t.datetime "created_at",                                    :null => false
     t.datetime "updated_at",                                    :null => false
+    t.decimal  "amount_eur",     :precision => 15, :scale => 2
   end
 
   create_table "declaration_debts", :force => true do |t|
@@ -59,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.text     "description"
+    t.decimal  "amount_eur",      :precision => 15, :scale => 2
   end
 
   create_table "declaration_income", :force => true do |t|
@@ -72,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.decimal  "amount_lvl",          :precision => 15, :scale => 2
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
   create_table "declaration_loans", :force => true do |t|
@@ -83,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.text     "description"
+    t.decimal  "amount_eur",      :precision => 15, :scale => 2
   end
 
   create_table "declaration_other_facts", :force => true do |t|
@@ -132,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.decimal  "amount_lvl",          :precision => 15, :scale => 2
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
   create_table "declaration_vehicles", :force => true do |t|
@@ -178,6 +185,15 @@ ActiveRecord::Schema.define(:version => 20161029095104) do
     t.decimal  "income_amount_lvl",                  :precision => 15, :scale => 2
     t.decimal  "loans_amount_lvl",                   :precision => 15, :scale => 2
     t.decimal  "securities_amount_lvl",              :precision => 15, :scale => 2
+    t.string   "project"
+    t.decimal  "cash_amount_eur",                    :precision => 15, :scale => 2
+    t.decimal  "bank_amount_eur",                    :precision => 15, :scale => 2
+    t.decimal  "companies_amount_eur",               :precision => 15, :scale => 2
+    t.decimal  "deals_amount_eur",                   :precision => 15, :scale => 2
+    t.decimal  "debts_amount_eur",                   :precision => 15, :scale => 2
+    t.decimal  "income_amount_eur",                  :precision => 15, :scale => 2
+    t.decimal  "loans_amount_eur",                   :precision => 15, :scale => 2
+    t.decimal  "securities_amount_eur",              :precision => 15, :scale => 2
   end
 
   create_table "import_declarations", :force => true do |t|

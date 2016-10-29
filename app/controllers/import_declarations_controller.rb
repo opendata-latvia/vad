@@ -10,13 +10,13 @@ class ImportDeclarationsController < ApplicationController
     @import_declaration = ImportDeclaration.find(params[:id])
     authorize! :import, @import_declaration
     @import_declaration.import!
-    redirect_to :action => :index
+    redirect_to import_declarations_path(params.slice(:project))
   end
 
   def import_all
     authorize! :import, ImportDeclaration
-    ImportDeclaration.import_all!
-    redirect_to :action => :index
+    ImportDeclaration.import_all!(params)
+    redirect_to import_declarations_path(params.slice(:project))
   end
 
   def delete_imported

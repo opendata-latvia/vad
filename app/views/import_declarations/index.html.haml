@@ -47,7 +47,7 @@
             %td
               - if d.new? || d.error?
                 .pull-left
-                  = button_to "Importēt", import_import_declaration_path(d), :method => :put, :class => 'btn btn-primary pull-left'
+                  = button_to "Importēt", import_import_declaration_path(d, params.slice(:project)), :method => :put, :class => 'btn btn-primary pull-left'
               - if d.error? && can?(:destroy, d)
                 .pull-left
                   &nbsp;
