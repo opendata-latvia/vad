@@ -26,15 +26,15 @@ class ImportDeclarationsController < ApplicationController
   end
 
   def create
-    source_id = params[:id].presence
+    md5 = Digest::MD5.hexdigest(params[:data].to_s)
     project = (params[:project] || params[:collection]).presence
-    result = if source_id && ImportDeclaration.find_by_source_id_and_project(source_id, project)
+    result = if ImportDeclaration.find_by_md5_and_project(md5, project)
       'IN'
     else
       ImportDeclaration.create(
         data: params[:data],
-        project: project,
-        source_id: source_id
+        md5: md5,
+        project: project
       )
       'OK'
     end
