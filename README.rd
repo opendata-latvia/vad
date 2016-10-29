@@ -1,6 +1,17 @@
 VAD
 ===
 
+Data collection
+---------------
+
+Install [Tampermonkey extension for Google Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
+).
+
+Install [VAD data collection script](https://vad.opendata.lv/vid-vad-vici.user.js).
+
+Start [collecting data](https://www6.vid.gov.lv/vid_pdb/vad).
+
+
 Development environment preparation
 -----------------------------------
 
