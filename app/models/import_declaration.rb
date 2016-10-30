@@ -252,39 +252,56 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def import_companies_and_securities
-    return unless companies = section_data('Komercsabiedrības')
     total_companies_amount_eur = 0
     total_securities_amount_eur = 0
-    companies.each do |c|
-      if shares = get(c, /Kapitāla.* skaits/)
-        registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
-        amount, currency, amount_lvl, amount_eur = parse_amount(get(c, /Summa|kopējā vērtība/), c["Valūta"])
-        @declaration.companies.create!(
-          :name => get(c, /(Juridisk|Komerc).* nosaukums/),
-          :registration_number => registration_number,
-          :legal_address => legal_address,
-          :shares => shares,
-          :amount => amount,
-          :currency => currency,
-          :amount_lvl => amount_lvl,
-          :amount_eur => amount_eur
-        )
-        total_companies_amount_eur += amount_eur||0
-      else
-        registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
-        amount, currency, amount_lvl, amount_eur = parse_amount(c["Summa (nominālvērtībā)"], c["Valūta"])
-        @declaration.securities.create!(
-          :issuer => c["Vērtspapīru emitenta nosaukums"],
-          :registration_number => registration_number,
-          :legal_address => legal_address,
-          :kind => c["Vērtspapīru veids"],
-          :units => c["Skaits"],
-          :amount => amount,
-          :currency => currency,
-          :amount_lvl => amount_lvl,
-          :amount_eur => amount_eur,
-        )
-        total_securities_amount_eur += amount_eur||0
+    if companies = section_data('Komercsabiedrības')
+      companies.each do |c|
+        if shares = get(c, /Kapitāla.* skaits/)
+          registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
+          amount, currency, amount_lvl, amount_eur = parse_amount(get(c, /Summa|kopējā vērtība/), c["Valūta"])
+          @declaration.companies.create!(
+            :name => get(c, /(Juridisk|Komerc).* nosaukums/),
+            :registration_number => registration_number,
+            :legal_address => legal_address,
+            :shares => shares,
+            :amount => amount,
+            :currency => currency,
+            :amount_lvl => amount_lvl,
+            :amount_eur => amount_eur
+          )
+          total_companies_amount_eur += amount_eur||0
+        elsif issuer = c["Vērtspapīru emitenta nosaukums"]
+          registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
+          amount, currency, amount_lvl, amount_eur = parse_amount(c["Summa (nominālvērtībā)"], c["Valūta"])
+          @declaration.securities.create!(
+            :issuer => issuer,
+            :registration_number => registration_number,
+            :legal_address => legal_address,
+            :kind => c["Vērtspapīru veids"],
+            :units => c["Skaits"],
+            :amount => amount,
+            :currency => currency,
+            :amount_lvl => amount_lvl,
+            :amount_eur => amount_eur
+          )
+          total_securities_amount_eur += amount_eur||0
+        end
+      end
+    end
+    if securities = section_data("piederošie finanšu instrumenti")
+      securities.each do |s|
+        if kind = s["Finanšu instrumenti"]
+          amount, currency, amount_lvl, amount_eur = parse_amount(s["Finanšu instrumentu kopējā vērtība"], s["Valūta"])
+          @declaration.securities.create!(
+            :kind => kind,
+            :units => s["Finanšu instrumentu skaits"],
+            :amount => amount,
+            :currency => currency,
+            :amount_lvl => amount_lvl,
+            :amount_eur => amount_eur
+          )
+          total_securities_amount_eur += amount_eur||0
+        end
       end
     end
     @declaration.companies_amount_eur = total_companies_amount_eur > 0 ? total_companies_amount_eur : nil
