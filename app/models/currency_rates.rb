@@ -35,7 +35,7 @@ module CurrencyRates
 
     # get missing rates from Yahoo
     if currency && currency.length == 3 && !eur_rates[currency]
-      currencies_parameter = "s=EUR#{c}=X"
+      currencies_parameter = "s=EUR#{currency}=X"
       yahoo_url = "http://download.finance.yahoo.com/d/quotes.csv?#{currencies_parameter}&f=l1&e=.cs"
       if rates_string = http_get(yahoo_url)
         if (rate = rates_string.to_f) > 0
