@@ -190,14 +190,14 @@ function postData(data, id, that){
     });
     resultData.sectionData = sectionData;
 
-    var collection = trim($("#collection").val());
+    var project = trim($("#project").val());
 
 
 
     $.ajax({
         type: 'POST',
         url: parsingServer,
-        data: {'appid': appid, 'appversion': appver, collection: collection, 'data': JSON.stringify(resultData), 'id': id},
+        data: {'appid': appid, 'appversion': appver, 'project': project, 'data': JSON.stringify(resultData), 'id': id},
         success: function(data) {
             console.log("Request done.");
             $('#'+that).children(".preload").remove();
@@ -368,8 +368,8 @@ function addStatusSpace(){
 
 }
 
-function addCollectionInput() {
-    $("#frmQuery").append('<div class="surname"><label for="collection">Kolekcija</label><input id="collection" maxlength="120" name="collection" size="30" type="text" value=""></div>');
+function addProjectInput() {
+    $("#frmQuery").append('<div class="surname"><label for="project">Projekts</label><input id="project" maxlength="120" name="project" size="30" type="text" value=""></div>');
 }
 
 function addCaptchaSpace(){
@@ -446,7 +446,7 @@ $(document).ready(function(){
     addCSS();
     addCaptchaSpace();
     addStatusSpace();
-    addCollectionInput();
+    addProjectInput();
 
     waitForKeyElements (".itemcount", hijackFunction);
 
