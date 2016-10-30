@@ -170,7 +170,9 @@ function postData(data, id, that){
         var $table = $(this).next("table");
         while($table.length > 0) {
 
-            sectionData[section] ||= [];
+            if (!sectionData[section]) {
+                sectionData[section] = [];
+            }
             var headers = $table.find("thead th").toArray().map(function(el) {
                 return trim($(el).text());
             });
