@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161030141559) do
+ActiveRecord::Schema.define(:version => 20161030142025) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
+  add_index "declaration_cash", ["declaration_id"], :name => "index_declaration_cash_on_declaration_id"
+
   create_table "declaration_companies", :force => true do |t|
     t.integer  "declaration_id"
     t.string   "name"
@@ -42,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
+  add_index "declaration_companies", ["declaration_id"], :name => "index_declaration_companies_on_declaration_id"
+
   create_table "declaration_deals", :force => true do |t|
     t.integer  "declaration_id"
     t.string   "description"
@@ -52,6 +56,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "updated_at",                                    :null => false
     t.decimal  "amount_eur",     :precision => 15, :scale => 2
   end
+
+  add_index "declaration_deals", ["declaration_id"], :name => "index_declaration_deals_on_declaration_id"
 
   create_table "declaration_debts", :force => true do |t|
     t.integer  "declaration_id"
@@ -64,6 +70,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.text     "description"
     t.decimal  "amount_eur",      :precision => 15, :scale => 2
   end
+
+  add_index "declaration_debts", ["declaration_id"], :name => "index_declaration_debts_on_declaration_id"
 
   create_table "declaration_income", :force => true do |t|
     t.integer  "declaration_id"
@@ -79,6 +87,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
+  add_index "declaration_income", ["declaration_id"], :name => "index_declaration_income_on_declaration_id"
+
   create_table "declaration_loans", :force => true do |t|
     t.integer  "declaration_id"
     t.decimal  "amount",          :precision => 15, :scale => 2
@@ -91,12 +101,16 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.decimal  "amount_eur",      :precision => 15, :scale => 2
   end
 
+  add_index "declaration_loans", ["declaration_id"], :name => "index_declaration_loans_on_declaration_id"
+
   create_table "declaration_other_facts", :force => true do |t|
     t.integer  "declaration_id"
     t.text     "description"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
+
+  add_index "declaration_other_facts", ["declaration_id"], :name => "index_declaration_other_facts_on_declaration_id"
 
   create_table "declaration_other_workplaces", :force => true do |t|
     t.integer  "declaration_id"
@@ -108,6 +122,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "updated_at",          :null => false
   end
 
+  add_index "declaration_other_workplaces", ["declaration_id"], :name => "index_declaration_other_workplaces_on_declaration_id"
+
   create_table "declaration_real_estates", :force => true do |t|
     t.integer  "declaration_id"
     t.string   "kind"
@@ -118,6 +134,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "updated_at",     :null => false
   end
 
+  add_index "declaration_real_estates", ["declaration_id"], :name => "index_declaration_real_estates_on_declaration_id"
+
   create_table "declaration_relatives", :force => true do |t|
     t.integer  "declaration_id"
     t.string   "full_name"
@@ -125,6 +143,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
+
+  add_index "declaration_relatives", ["declaration_id"], :name => "index_declaration_relatives_on_declaration_id"
 
   create_table "declaration_securities", :force => true do |t|
     t.integer  "declaration_id"
@@ -141,6 +161,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.decimal  "amount_eur",          :precision => 15, :scale => 2
   end
 
+  add_index "declaration_securities", ["declaration_id"], :name => "index_declaration_securities_on_declaration_id"
+
   create_table "declaration_vehicles", :force => true do |t|
     t.integer  "declaration_id"
     t.string   "kind"
@@ -151,6 +173,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
+
+  add_index "declaration_vehicles", ["declaration_id"], :name => "index_declaration_vehicles_on_declaration_id"
 
   create_table "declarations", :force => true do |t|
     t.string   "kind"
@@ -221,6 +245,8 @@ ActiveRecord::Schema.define(:version => 20161030141559) do
     t.datetime "updated_at",       :null => false
     t.string   "declaration_hash"
   end
+
+  add_index "people", ["declaration_hash"], :name => "index_people_on_declaration_hash"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                                 :null => false
