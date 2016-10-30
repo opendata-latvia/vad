@@ -75,8 +75,8 @@ class VAD.DeclarationsDatatableView extends Backbone.View
     allPagesParams = _.clone params
     delete allPagesParams.page
     delete allPagesParams.per_page
-    delete allPagesParams.sort
-    delete allPagesParams.sort_direction
+    # delete allPagesParams.sort
+    # delete allPagesParams.sort_direction
 
     @$("a[data-download-path]").each ->
       $this = $(this)
