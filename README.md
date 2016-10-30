@@ -16,6 +16,10 @@ Izdomājiet unikālu projekta nosaukumu, ko ievadīt Projekts laukā.
 Ja jūs esat ar e-pasta adresi `@xxx.lv`, tad rekomendējam visiem jūsu projektiem izmantot `xxx` prefiksu, piemēram, `xxx2016`
 (lai varētu atpazīt, kas izmanto kurus projektus).
 
+Apmēram ik pēc 10 deklarācijām (kas savāktas no vienas IP adreses), parādīsies popup logs, kur jāievada CAPTCHA kods.
+Tiek parādīti divi vārdi, bet pārbaudīts tiek tikai viens - parasti tas ir vienkāršākais vārds, kā, piemēram, "road", "route", "calle" vai kas tamlīdzīgs.
+Pietiek ievadīt šo vienu vienkāršāko vārdu. Ja nav skaidrs, kas jāievada, var ievadīt jebko un tad parādīsies nākamie vārdi.
+
 Datu apskate
 ------------
 
