@@ -237,6 +237,7 @@ class ImportDeclaration < ActiveRecord::Base
         :legal_address => legal_address
       )
     end
+    @declaration.declaration_other_workplaces_count = other_workplaces.size
   end
 
   def import_real_estates
@@ -249,10 +250,13 @@ class ImportDeclaration < ActiveRecord::Base
         :other_owners => get(re, "īpašnieka vai līdzīpašnieka vārdu un uzvārdu")
       )
     end
+    @declaration.declaration_real_estates_count = real_estates.size
   end
 
   def import_companies_and_securities
+    companies_count = 0
     total_companies_amount_eur = 0
+    securities_count = 0
     total_securities_amount_eur = 0
     if companies = section_data('Komercsabiedrības')
       companies.each do |c|
@@ -269,6 +273,7 @@ class ImportDeclaration < ActiveRecord::Base
             :amount_lvl => amount_lvl,
             :amount_eur => amount_eur
           )
+          companies_count += 1
           total_companies_amount_eur += amount_eur||0
         elsif issuer = c["Vērtspapīru emitenta nosaukums"]
           registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
@@ -284,6 +289,7 @@ class ImportDeclaration < ActiveRecord::Base
             :amount_lvl => amount_lvl,
             :amount_eur => amount_eur
           )
+          securities_count += 1
           total_securities_amount_eur += amount_eur||0
         end
       end
@@ -300,11 +306,14 @@ class ImportDeclaration < ActiveRecord::Base
             :amount_lvl => amount_lvl,
             :amount_eur => amount_eur
           )
+          securities_count += 1
           total_securities_amount_eur += amount_eur||0
         end
       end
     end
+    @declaration.declaration_companies_count = companies_count
     @declaration.companies_amount_eur = total_companies_amount_eur > 0 ? total_companies_amount_eur : nil
+    @declaration.declaration_securities_count = securities_count
     @declaration.securities_amount_eur = total_securities_amount_eur > 0 ? total_securities_amount_eur : nil
   end
 
@@ -319,10 +328,12 @@ class ImportDeclaration < ActiveRecord::Base
         :ownership_type => get(v, "Atzīme par to, vai ir īpašumā")
       )
     end
+    @declaration.declaration_vehicles_count = vehicles.size
   end
 
   def import_cash
     return unless cash = section_data('naudas uzkrājumi')
+    cash_count = 0
     total_cash_amount_eur = 0
     total_bank_amount_eur = 0
     cash.each do |c|
@@ -336,6 +347,7 @@ class ImportDeclaration < ActiveRecord::Base
           :amount_eur => amount_eur,
           :amount_in_words => c["Skaidrās naudas uzkrājuma summa ar vārdiem"]
         )
+        cash_count += 1
         total_cash_amount_eur += amount_eur||0
       elsif c["Bezkaidrās naudas uzkrājuma summa"]
         registration_number, legal_address = parse_legal_address(get(c, /Juridisk.* reģistrācijas numurs/))
@@ -350,9 +362,11 @@ class ImportDeclaration < ActiveRecord::Base
           :registration_number => registration_number,
           :legal_address => legal_address
         )
+        cash_count += 1
         total_bank_amount_eur += amount_eur||0
       end
     end
+    @declaration.declaration_cash_count = cash_count
     @declaration.cash_amount_eur = total_cash_amount_eur > 0 ? total_cash_amount_eur : nil
     @declaration.bank_amount_eur = total_bank_amount_eur > 0 ? total_bank_amount_eur : nil
   end
@@ -376,6 +390,7 @@ class ImportDeclaration < ActiveRecord::Base
       total_amount_eur += amount_eur||0
     end
     @declaration.income_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
+    @declaration.declaration_income_count = income.size
   end
 
   def import_deals
@@ -393,6 +408,7 @@ class ImportDeclaration < ActiveRecord::Base
       total_amount_eur += amount_eur||0
     end
     @declaration.deals_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
+    @declaration.declaration_deals_count = deals.size
   end
 
   def import_debts
@@ -416,6 +432,7 @@ class ImportDeclaration < ActiveRecord::Base
       )
     end
     @declaration.debts_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
+    @declaration.declaration_debts_count = debts.size
   end
 
   def import_loans
@@ -439,6 +456,7 @@ class ImportDeclaration < ActiveRecord::Base
       )
     end
     @declaration.loans_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
+    @declaration.declaration_loans_count = loans.size
   end
 
   def import_other_facts
@@ -460,7 +478,8 @@ class ImportDeclaration < ActiveRecord::Base
       )
       children_count += 1 if kind =~ /dēls|meita/i
     end
-    @declaration.declaration_children_count = children_count > 0 ? children_count : nil
+    @declaration.declaration_children_count = children_count
+    @declaration.declaration_relatives_count = relatives.size
   end
 
 end

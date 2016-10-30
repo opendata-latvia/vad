@@ -43,6 +43,7 @@ describe "import declaration" do
         "90000038578", "Latvija, Rīga, Rātslaukums 7"
       ]
     ]
+    @declaration.declaration_other_workplaces_count.should == @declaration.other_workplaces.size
   end
 
   it "should create real estates" do
@@ -53,6 +54,7 @@ describe "import declaration" do
         "īpašumā",
         "-"
       ]
+    @declaration.declaration_real_estates_count.should == @declaration.real_estates.size
   end
 
   it "should create companies" do
@@ -68,6 +70,7 @@ describe "import declaration" do
         1.0,
         (1.0 / 0.702804).round(2)
       ]
+    @declaration.declaration_companies_count.should == @declaration.companies.size
   end
 
   it "should create securities" do
@@ -84,6 +87,7 @@ describe "import declaration" do
         20000.00 * 0.702804,
         20000.00
       ]
+    @declaration.declaration_securities_count.should == @declaration.securities.size
   end
 
   it "should create vehicles" do
@@ -95,6 +99,7 @@ describe "import declaration" do
         2008,
         "īpašumā"
       ]
+    @declaration.declaration_vehicles_count.should == @declaration.vehicles.size
   end
 
   it "creates cash on hand" do
@@ -109,6 +114,7 @@ describe "import declaration" do
         BigDecimal((500.00 / 0.702804).round(2).to_s),
         "pieci simti latu"
       ]
+    @declaration.declaration_cash_count.should == @declaration.cash.size
   end
 
   it "creates cash in bank" do
@@ -145,6 +151,7 @@ describe "import declaration" do
         '9572.13',
         (9572.13 / 0.702804).round(2).to_s
       ]
+    @declaration.declaration_income_count.should == @declaration.income.size
   end
 
   it "creates deals"do
@@ -158,6 +165,7 @@ describe "import declaration" do
         44000.00,
         (44000 / 0.702804).round(2).to_s
       ]
+    @declaration.declaration_deals_count.should == @declaration.deals.size
   end
 
   it "creates debts" do
@@ -171,6 +179,7 @@ describe "import declaration" do
         (5000 / 0.702804).round(2).to_s,
         "pieci tūkstoši latu"
       ]
+    @declaration.declaration_debts_count.should == @declaration.debts.size
   end
 
   it "creates loans" do
@@ -184,6 +193,7 @@ describe "import declaration" do
         (190548.41 / 0.702804).round(2).to_s,
         "viens simts deviņdesmit tūkstoši pieci simti četrdesmit astoņi lati 41 santīms"
       ]
+    @declaration.declaration_loans_count.should == @declaration.loans.size
   end
 
   it "creats other facts" do
@@ -201,6 +211,8 @@ describe "import declaration" do
         "AIGARS BĒRZIŅŠ",
         "Dēls"
       ]
+    @declaration.declaration_relatives_count.should == @declaration.relatives.size
+    @declaration.declaration_children_count.should == @declaration.relatives.select{|r| r.kind =~ /dēls|meita/i}.size
   end
 
   it "creates person" do
