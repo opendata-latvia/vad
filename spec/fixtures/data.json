@@ -294,6 +294,14 @@
         "Kapitāla daļu skaits": "6460",
         "Summa": "6460.00",
         "Valūta": "LVL"
+      },
+      {
+        "Vērtspapīru emitenta nosaukums": "AS \"SEB banka\"",
+        "Reģistrācijas numurs Komercreģistrā un juridiskā adrese": "40003151743 Latvija, Ķekavas pag., Valdlauči, Meistaru 1",
+        "Vērtspapīru veids": "Obligācijas",
+        "Skaits": "200",
+        "Summa (nominālvērtībā)": "20000.00",
+        "Valūta": "EUR"
       }
     ],
     "5. Deklarācijas iesniedzējam piederošie reģistrējamie transportlīdzekļi, kā arī tā valdījumā vai lietošanā esošie transportlīdzekļi un transportlīdzekļi, kurus tas ir iegādājies uz līzinga līguma pamata": [
@@ -329,6 +337,24 @@
         "Skaidrās naudas uzkrājuma summa ar cipariem": "1000.00",
         "Valūta": "EUR",
         "Skaidrās naudas uzkrājuma summa ar vārdiem": "viens tūkstotis eiro"
+      },
+      {
+        "Bezkaidrās naudas uzkrājuma summa": "25289.31",
+        "Valūta": "LVL",
+        "Bezskaidrās naudas uzkrājumu turētāja vai norēķinu kartes izdevēja nosaukums": "AS \"SEB banka\"",
+        "Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese": "40003151743 Latvija, Ķekavas pag., Valdlauči, Meistaru 1"
+      },
+      {
+        "Bezkaidrās naudas uzkrājuma summa": "2442214.53",
+        "Valūta": "EUR",
+        "Bezskaidrās naudas uzkrājumu turētāja vai norēķinu kartes izdevēja nosaukums": "AS \"SEB banka\"",
+        "Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese": "40003151743 Latvija, Ķekavas pag., Valdlauči, Meistaru 1"
+      },
+      {
+        "Bezkaidrās naudas uzkrājuma summa": "30606.58",
+        "Valūta": "USD",
+        "Bezskaidrās naudas uzkrājumu turētāja vai norēķinu kartes izdevēja nosaukums": "AS \"SEB banka\"",
+        "Juridiskai personai - reģistrācijas numurs Komercreģistrā un juridiskā adrese": "40003151743 Latvija, Ķekavas pag., Valdlauči, Meistaru 1"
       }
     ],
     "7. Visi deklarācijas iesniedzēja pārskata periodā gūtie ienākumi, piemēram, darba alga, piemaksas pie darba algas, prēmijas, honorāri, ienākumi no saimnieciskās un komercdarbības, apdrošināšanas izmaksas, kompensācijas, ienākumi no kustamās un nekustamās mantas realizācijas un nomas (īres), laimesti un dividendes, mantojumi, dāvinājumi un citi ienākumi": [

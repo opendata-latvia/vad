@@ -48,23 +48,30 @@ class ImportDeclaration < ActiveRecord::Base
     end
   end
 
-  def self.delete_imported!
-    Person.delete_all
-    Declaration.delete_all
-    DeclarationOtherWorkplace.delete_all
-    DeclarationRealEstate.delete_all
-    DeclarationCompany.delete_all
-    DeclarationSecurity.delete_all
-    DeclarationVehicle.delete_all
-    DeclarationCash.delete_all
-    DeclarationIncome.delete_all
-    DeclarationDeal.delete_all
-    DeclarationDebt.delete_all
-    DeclarationLoan.delete_all
-    DeclarationOtherFact.delete_all
-    DeclarationRelative.delete_all
+  def self.delete_imported!(params)
+    if (project = params[:project]).present?
+      declaration_id_condition = ["declaration_id IN (SELECT id FROM declarations WHERE project = ?)", project]
+      [
+        DeclarationOtherWorkplace,
+        DeclarationRealEstate,
+        DeclarationCompany,
+        DeclarationSecurity,
+        DeclarationVehicle,
+        DeclarationCash,
+        DeclarationIncome,
+        DeclarationDeal,
+        DeclarationDebt,
+        DeclarationLoan,
+        DeclarationOtherFact,
+        DeclarationRelative
+      ].each do |klass|
+        klass.where(*declaration_id_condition).delete_all
+      end
+      Person.where("id IN (SELECT person_id FROM declarations WHERE project = ?)", project).delete_all
+      Declaration.where(project: project).delete_all
 
-    update_all("status = 'new'")
+      where(project: project).update_all("status = 'new'")
+    end
   end
 
   def import!
@@ -73,6 +80,11 @@ class ImportDeclaration < ActiveRecord::Base
       self.status = 'skip'
       save!
       return
+    end
+
+    # Destroy existing declaration before reimporting
+    if declaration = Declaration.find_by_import_declaration_id(id)
+      declaration.destroy
     end
 
     import_head
@@ -90,11 +102,14 @@ class ImportDeclaration < ActiveRecord::Base
 
     assign_person_to_declaration
 
+    @declaration.save!
+
     self.error = nil
     self.status = 'imported'
     save!
   rescue => e
     raise if Rails.env.test?
+    @declaration.destroy if @declaration
     self.error = "#{e.message}\n#{e.backtrace[0..2].join("\n")}"
     self.status = 'error'
     save!
@@ -114,7 +129,8 @@ class ImportDeclaration < ActiveRecord::Base
       workplace: data["workplace"],
       position: data["workplace_role"],
       submitted_on: parse_date(data["date_added"]),
-      published_on: parse_date(data["date_published"])
+      published_on: parse_date(data["date_published"]),
+      import_declaration_id: id
     )
     @declaration.save!
   end
@@ -131,7 +147,7 @@ class ImportDeclaration < ActiveRecord::Base
       :last_name => last_name,
       :declaration_hash => declaration_hash
     )
-    @declaration.update_attributes(:person_id => person.id)
+    @declaration.person_id = person.id
   end
 
   def parse_date(string)
@@ -234,11 +250,11 @@ class ImportDeclaration < ActiveRecord::Base
     total_companies_amount_eur = 0
     total_securities_amount_eur = 0
     companies.each do |c|
-      if shares = get(c, "Kapitāla daļu skaits")
-        registration_number, legal_address = parse_legal_address get(c, "Reģistrācijas numurs")
-        amount, currency, amount_lvl, amount_eur = parse_amount(c["Summa"], c["Valūta"])
+      if shares = get(c, /Kapitāla.* skaits/)
+        registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
+        amount, currency, amount_lvl, amount_eur = parse_amount(get(c, /Summa|kopējā vērtība/), c["Valūta"])
         @declaration.companies.create!(
-          :name => get(c, "Juridiskās personas nosaukums"),
+          :name => get(c, /(Juridisk|Komerc).* nosaukums/),
           :registration_number => registration_number,
           :legal_address => legal_address,
           :shares => shares,
@@ -249,7 +265,7 @@ class ImportDeclaration < ActiveRecord::Base
         )
         total_companies_amount_eur += amount_eur||0
       else
-        registration_number, legal_address = parse_legal_address get(c, "Reģistrācijas numurs")
+        registration_number, legal_address = parse_legal_address get(c, "eģistrācijas numurs")
         amount, currency, amount_lvl, amount_eur = parse_amount(c["Summa (nominālvērtībā)"], c["Valūta"])
         @declaration.securities.create!(
           :issuer => c["Vērtspapīru emitenta nosaukums"],
@@ -265,8 +281,8 @@ class ImportDeclaration < ActiveRecord::Base
         total_securities_amount_eur += amount_eur||0
       end
     end
-    @declaration.update_attribute :companies_amount_eur, total_companies_amount_eur
-    @declaration.update_attribute :securities_amount_eur, total_securities_amount_eur
+    @declaration.companies_amount_eur = total_companies_amount_eur > 0 ? total_companies_amount_eur : nil
+    @declaration.securities_amount_eur = total_securities_amount_eur > 0 ? total_securities_amount_eur : nil
   end
 
   def import_vehicles
@@ -314,8 +330,8 @@ class ImportDeclaration < ActiveRecord::Base
         total_bank_amount_eur += amount_eur||0
       end
     end
-    @declaration.update_attribute :cash_amount_eur, total_cash_amount_eur
-    @declaration.update_attribute :bank_amount_eur, total_bank_amount_eur
+    @declaration.cash_amount_eur = total_cash_amount_eur > 0 ? total_cash_amount_eur : nil
+    @declaration.bank_amount_eur = total_bank_amount_eur > 0 ? total_bank_amount_eur : nil
   end
 
   def import_income
@@ -336,7 +352,7 @@ class ImportDeclaration < ActiveRecord::Base
       )
       total_amount_eur += amount_eur||0
     end
-    @declaration.update_attribute :income_amount_eur, total_amount_eur
+    @declaration.income_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
   end
 
   def import_deals
@@ -353,7 +369,7 @@ class ImportDeclaration < ActiveRecord::Base
       )
       total_amount_eur += amount_eur||0
     end
-    @declaration.update_attribute :deals_amount_eur, total_amount_eur
+    @declaration.deals_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
   end
 
   def import_debts
@@ -376,7 +392,7 @@ class ImportDeclaration < ActiveRecord::Base
         end
       )
     end
-    @declaration.update_attribute :debts_amount_eur, total_amount_eur
+    @declaration.debts_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
   end
 
   def import_loans
@@ -399,7 +415,7 @@ class ImportDeclaration < ActiveRecord::Base
         end
       )
     end
-    @declaration.update_attribute :loans_amount_eur, total_amount_eur
+    @declaration.loans_amount_eur = total_amount_eur > 0 ? total_amount_eur : nil
   end
 
   def import_other_facts
@@ -421,7 +437,7 @@ class ImportDeclaration < ActiveRecord::Base
       )
       children_count += 1 if kind =~ /dēls|meita/i
     end
-    @declaration.update_attribute :declaration_children_count, children_count
+    @declaration.declaration_children_count = children_count > 0 ? children_count : nil
   end
 
 end
