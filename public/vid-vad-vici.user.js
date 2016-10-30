@@ -168,9 +168,9 @@ function postData(data, id, that){
     $data.find("h2").each(function() {
         var section = trim($(this).text());
         var $table = $(this).next("table");
-        if($table.length > 0) {
+        while($table.length > 0) {
 
-            sectionData[section] = [];
+            sectionData[section] ||= [];
             var headers = $table.find("thead th").toArray().map(function(el) {
                 return trim($(el).text());
             });
@@ -184,6 +184,8 @@ function postData(data, id, that){
                 });
                 sectionData[section].push(rowData);
             });
+
+            $table = $table.next("table");
         }
     });
     resultData.sectionData = sectionData;
