@@ -41,7 +41,7 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def self.import_all!(params = {})
-    relation = where("status in (?)", %w(new error)).order('created_at asc')
+    relation = where("status in (?)", %w(new error)).order('id asc')
     relation = relation.where("project = ?", params[:project]) if params[:project]
     relation.each do |record|
       record.import!
