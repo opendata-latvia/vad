@@ -1,16 +1,43 @@
 VAD
 ===
 
-Data collection
+Datu savākšana
 ---------------
 
-Install [Tampermonkey extension for Google Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
+Rekomendējam izmantot Google Chrome pārlūkprogrammu.
+Uzinstalējiet [Tampermonkey paplašinājumu Google Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
 ).
 
-Install [VAD data collection script](https://vad.opendata.lv/vid-vad-vici.user.js).
+Uzinstalējiet [VAD datu savākšanas skriptu](https://vad.opendata.lv/vid-vad-vici.user.js).
 
-Start [collecting data](https://www6.vid.gov.lv/vid_pdb/vad).
+Sāciet [savākt datus](https://www6.vid.gov.lv/vid_pdb/vad).
 
+Izdomājiet unikālu projekta nosaukumu, ko ievadīt Projekts laukā.
+Ja jūs esat ar e-pasta adresi `@xxx.lv`, tad rekomendējam visiem jūsu projektiem izmantot `xxx` prefiksu, piemēram, `xxx2016`
+(lai varētu atpazīt, kas izmanto kurus projektus).
+
+Datu apskate
+------------
+
+Pieslēdzieties [VAD](https://vad.opendata.lv) ar jūsu e-pastu un paroli.
+
+Pārslēdzieties uz tabu [Importēt deklarācijas](https://vad.opendata.lv/import_declarations).
+Tur jūs redzēsiet pēdējās savāktās deklarācijas ar statusu `new`.
+
+Uzklikšķiniet uz jūsu projekta linka, lai atlasītu tikai jūsu projekta savāktās deklarācijas.
+Uzklikšķiniet uz **Importēt visus**, lai ieimportētu visas jaunās deklarācijas - sagaidiet, līdz beidzas datu imports.
+
+Pārslēdzieties uz tabu [Deklarācijas](https://vad.opendata.lv/declarations).
+**Projekts** filtrā ierakstiet savu projekta nosaukumu, lai atfiltrētu tikai tās deklarācijas.
+
+Papildus var veikt sekojošas filtrēšanas darbības:
+
+* Ierakstiet teksta fragmentu, lai atlasītu rindas, kurās atbilstošajā laukā ir šis teksts.
+* Ierakstiet `=xxx` vai `!=xxx`, lai atfiltrētu rindas ar precīzu vērtību `xxx` vai kas nav precīzi vienādas ar `xxx`.
+* Ierakstiet skaitliskās kolonnās `<xxx`, `<=xxx`, `>xxx` vai `>=xxx`, lai atlasītu vērtības, kas ir mazākas vai lielākas par `xxx`.
+* Uzklikšķiniet uz kolonnām, lai sakārtotu augošā vai dilstošā secībā.
+
+Ja vēlaties izeksportēt atfiltrētos datus, tad lapas apakšā variet lejuplādēt datus CSV formātā.
 
 Development environment preparation
 -----------------------------------
