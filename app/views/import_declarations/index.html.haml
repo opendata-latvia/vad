@@ -27,7 +27,7 @@
       %tbody
         - @import_declarations.each do |d|
           %tr{:data => {:id => d.id}}
-            %td= d.created_at.to_s(:db)
+            %td= d.created_at.to_s
             %td
               %span.label{class: status_label(d.status)}= d.status
             %td
