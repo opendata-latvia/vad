@@ -41,10 +41,10 @@ class ImportDeclaration < ActiveRecord::Base
   end
 
   def self.import_all!(params = {})
-    relation = where("status in (?)", %w(new error))
+    relation = where("status in (?)", %w(new error)).order('created_at asc')
     relation = relation.where("project = ?", params[:project]) if params[:project]
-    relation.each do |id|
-      id.import!
+    relation.each do |record|
+      record.import!
     end
   end
 
@@ -82,11 +82,6 @@ class ImportDeclaration < ActiveRecord::Base
       return
     end
 
-    # Destroy existing declaration before reimporting
-    if declaration = Declaration.find_by_import_declaration_id(id)
-      declaration.destroy
-    end
-
     import_head
     import_other_workplaces
     import_real_estates
@@ -121,17 +116,28 @@ class ImportDeclaration < ActiveRecord::Base
     if period_year =~ /(\d+)/
       period_year = $1
     end
-    @declaration = Declaration.new(
-      project: project,
+    head_data = {
       kind: kind,
       period_year: period_year,
       full_name: data["name"],
       workplace: data["workplace"],
       position: data["workplace_role"],
       submitted_on: parse_date(data["date_added"]),
-      published_on: parse_date(data["date_published"]),
+      published_on: parse_date(data["date_published"])
+    }
+    head_md5 = Digest::MD5.hexdigest(JSON.dump head_data)
+
+    # Destroy existing declaration before reimporting
+    if declaration = (Declaration.find_by_import_declaration_id(id) ||
+                      Declaration.find_by_head_md5_and_project(head_md5, project))
+      declaration.destroy
+    end
+
+    @declaration = Declaration.new(head_data.merge(
+      head_md5: head_md5,
+      project: project,
       import_declaration_id: id
-    )
+    ))
     @declaration.save!
   end
 

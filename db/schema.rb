@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161029130027) do
+ActiveRecord::Schema.define(:version => 20161030133402) do
 
   create_table "declaration_cash", :force => true do |t|
     t.integer  "declaration_id"
@@ -194,16 +194,19 @@ ActiveRecord::Schema.define(:version => 20161029130027) do
     t.decimal  "income_amount_eur",                  :precision => 15, :scale => 2
     t.decimal  "loans_amount_eur",                   :precision => 15, :scale => 2
     t.decimal  "securities_amount_eur",              :precision => 15, :scale => 2
+    t.string   "head_md5"
   end
 
+  add_index "declarations", ["head_md5", "project"], :name => "index_declarations_on_head_md5_and_project"
+
   create_table "import_declarations", :force => true do |t|
-    t.string    "status",     :default => "new"
-    t.text      "data"
-    t.string    "md5"
-    t.timestamp "created_at",                    :null => false
-    t.datetime  "updated_at"
-    t.text      "error"
-    t.string    "project"
+    t.string   "status",     :default => "new"
+    t.text     "data"
+    t.string   "md5"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at"
+    t.text     "error"
+    t.string   "project"
   end
 
   add_index "import_declarations", ["md5", "project"], :name => "index_import_declarations_on_md5_and_project", :unique => true

@@ -2,18 +2,18 @@
 require "csv"
 
 class Declaration < ActiveRecord::Base
-  has_many :other_workplaces, :class_name => "DeclarationOtherWorkplace"
-  has_many :real_estates, :class_name => "DeclarationRealEstate"
-  has_many :companies, :class_name => "DeclarationCompany"
-  has_many :securities, :class_name => "DeclarationSecurity"
-  has_many :vehicles, :class_name => "DeclarationVehicle"
-  has_many :cash, :class_name => "DeclarationCash"
-  has_many :income, :class_name => "DeclarationIncome"
-  has_many :deals, :class_name => "DeclarationDeal"
-  has_many :debts, :class_name => "DeclarationDebt"
-  has_many :loans, :class_name => "DeclarationLoan"
-  has_many :other_facts, :class_name => "DeclarationOtherFact"
-  has_many :relatives, :class_name => "DeclarationRelative"
+  has_many :other_workplaces, dependent: :destroy, class_name: "DeclarationOtherWorkplace"
+  has_many :real_estates, dependent: :destroy, class_name: "DeclarationRealEstate"
+  has_many :companies, dependent: :destroy, class_name: "DeclarationCompany"
+  has_many :securities, dependent: :destroy, class_name: "DeclarationSecurity"
+  has_many :vehicles, dependent: :destroy, class_name: "DeclarationVehicle"
+  has_many :cash, dependent: :destroy, class_name: "DeclarationCash"
+  has_many :income, dependent: :destroy, class_name: "DeclarationIncome"
+  has_many :deals, dependent: :destroy, class_name: "DeclarationDeal"
+  has_many :debts, dependent: :destroy, class_name: "DeclarationDebt"
+  has_many :loans, dependent: :destroy, class_name: "DeclarationLoan"
+  has_many :other_facts, dependent: :destroy, class_name: "DeclarationOtherFact"
+  has_many :relatives, dependent: :destroy, class_name: "DeclarationRelative"
 
   DATATABLE_COLUMNS = [
     {:name => 'full_name_with_id', :label => 'Vārds, Uzvārds (ID)', :data_type => :string},
