@@ -3,7 +3,7 @@
     - if can? :import, ImportDeclaration
       .span2= button_to "Importēt visus", import_all_import_declarations_path(params.slice(:project)), :class => 'btn btn-primary'
     - if can? :destroy, Declaration
-      .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path, :class => 'btn btn-danger'
+      .span2= button_to "Izdzēst importētos", delete_imported_import_declarations_path(params.slice(:project)), :class => 'btn btn-danger'
 
   .row-fluid
     .span12

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class ImportDeclarationsController < ApplicationController
   before_filter :authenticate_user!, except: :create
 
@@ -15,32 +17,43 @@ class ImportDeclarationsController < ApplicationController
 
   def import_all
     authorize! :import, ImportDeclaration
-    ImportDeclaration.import_all!(params)
+    if params[:project].present?
+      ImportDeclaration.import_all!(params)
+    else
+      flash[:alert] = 'Jāizvēlas projekts, kura deklarācijas ir jāimportē!'
+    end
     redirect_to import_declarations_path(params.slice(:project))
   end
 
   def delete_imported
     authorize! :destroy, Declaration
-    ImportDeclaration.delete_imported!
-    redirect_to :action => :index
+    if params[:project].present?
+      ImportDeclaration.delete_imported!(params)
+      flash[:notice] = 'Importētās deklarācijas ir izdzēstas, var veikt atkārtotu importu.'
+    else
+      flash[:alert] = 'Jāizvēlas projekts, kura deklarācijas ir jādzēš!'
+    end
+    redirect_to import_declarations_path(params.slice(:project))
   end
 
   def create
-    md5 = Digest::MD5.hexdigest(params[:data].to_s)
     project = (params[:project] || params[:collection]).presence
-    result = if ImportDeclaration.find_by_md5_and_project(md5, project)
+    data_json = (JSON.parse(params[:data]) rescue nil)
+    md5 = Digest::MD5.hexdigest(params[:data].to_s)
+
+    result = if !project
+      'ERROR - jānorāda projekts!'
+    elsif !data_json || data_json['sections'].blank?
+      'ERROR - trūkst sections dati, mēģiniet vēlreiz!'
+    elsif ImportDeclaration.find_by_md5_and_project(md5, project)
       'IN'
     else
-      if (data_json = (JSON.parse(params[:data]) rescue nil)) && data_json['sections'].present?
-        ImportDeclaration.create(
-          data: params[:data],
-          md5: md5,
-          project: project
-        )
-        'OK'
-      else
-        'ERROR'
-      end
+      ImportDeclaration.create(
+        data: params[:data],
+        md5: md5,
+        project: project
+      )
+      'OK'
     end
     response.headers['Access-Control-Allow-Origin'] = '*'
     render text: result
