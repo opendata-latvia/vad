@@ -82,7 +82,7 @@ function waitForKeyElements (
     if (btargetsFound  &&  bWaitOnce  &&  timeControl) {
         //--- The only condition where we need to clear the timer.
         clearInterval (timeControl);
-        delete controlObj [controlKey]
+        delete controlObj [controlKey];
     }
     else {
         //--- Set a timer, if needed.
@@ -305,11 +305,11 @@ function takeSolveCaptcha(){
         data: {'recaptcha_response_field': $("#tadcode").val(), 'recaptcha_challenge_field' : $("#recaptcha_challenge_field").val()},
         success: function(data) {
 
-            console.log("Request done.")
+            console.log("Request done.");
 
             if (/check_code/i.test(data)){
                 console.log("Wrong code. :( Try again...");
-                newHrefVad($("#scid").attr('value'), $("#scold").attr('value'), $("#scthat").attr('value'), 0)
+                newHrefVad($("#scid").attr('value'), $("#scold").attr('value'), $("#scthat").attr('value'), 0);
                 return 0;
             }
             postData(data, $("#scid").attr('value'), $("#scthat").attr('value'), 1);
