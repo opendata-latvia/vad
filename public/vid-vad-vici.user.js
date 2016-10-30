@@ -207,17 +207,17 @@ function postData(data, id, that){
             }
             if(data == "OK"){
                 console.log("Success!!! The Matrix has you.");
-                showMessge("Thank you, you are awesome! :)", "ok");
+                showMessage("Thank you, you are awesome! :)", "ok");
                 $('#'+that).css("background-color", "green");
                 return true;
             }else if(data == "IN"){
                 console.log("Already have it!!! Awwww...");
-                showMessge("We already have this entry.", "warning");
+                showMessage("We already have this entry.", "warning");
                 $('#'+that).css("background-color", "yellow");
                 return true;
             }else{
                 console.log("Epic fail!!! "+ data);
-                showMessge("Failure: "+data, "error");
+                showMessage("Failure: "+data, "error");
                 $('#'+that).css("background-color", "red");
             }
 
@@ -258,7 +258,7 @@ function newHrefVad(item, isOld, that, captcha) {
 
                 solveCaptcha(data);
 
-                showMessge("Captcha required!", "error");
+                showMessage("Captcha required!", "error");
                 $('#'+that).css("background-color", "red");
 
                 preload.remove();
@@ -338,7 +338,7 @@ function hijackFunction(first){
 
 }
 
-function showMessge(message, type){
+function showMessage(message, type){
 
     var zumzum=$(document.createElement('div'));
     zumzum.css("display", "none");
