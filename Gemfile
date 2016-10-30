@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.18'
+gem 'rake', '10.3.2'
 
 gem 'mysql2'
 
@@ -10,13 +11,16 @@ gem 'simple_form'
 gem 'will_paginate', '~> 3.0'
 
 gem 'redis'
-gem 'redis-rails'
+gem 'redis-rails', '~> 3.2.3'
 
-gem 'devise'
-gem 'devise_invitable'
-gem 'cancan'
+gem 'devise', '~> 2.2.3'
+gem 'devise_invitable', '~> 1.1.4'
+gem 'cancan', '~> 1.6.2'
 
 gem 'settingslogic'
+
+gem 'httparty', '~> 0.14.0'
+gem 'nokogiri', '~> 1.6.8'
 
 # Gems used only for assets and not required
 # in production environments by default.
