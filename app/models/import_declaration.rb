@@ -158,68 +158,12 @@ class ImportDeclaration < ActiveRecord::Base
     end
   end
 
-  RATES_LVL = {
-    'LVL' => 1,
-    'EUR' => 0.702804,
-    'USD' => 0.702804 / 1.09700, # 0.544000,
-    'GBP' => 0.702804 / 0.77483, # 0.875000,
-    'RUB' => 0.702804 / 80.16740, # 0.017500,
-    'CHF' => 0.702804 / 1.08980, # 0.580000,
-    'BYR' => 0.702804 / 23361.19, # 0.063400,
-    'NOK' => 0.702804 / 9.38300, # 0.094500,
-    'LTL' => 0.702804 * 0.298203555, # 0.204000,
-    'AUD' => 0.702804 / 1.48590, # 0.556000,
-    'MTL' => 0.702804 / 0.429300, # 1.62,
-    'NZD' => 0.702804 / 1.62230, # 0.446000,
-    'CAD' => 0.702804 / 1.47170, # 0.551000,
-    'SEK' => 0.702804 / 9.33450, # 0.081500,
-    'CYP' => 0.702804 / 0.585274, #1.18998
-    'DKK' => 0.702804 / 7.43820,
-    'TRY' => 0.702804 / 3.40580,
-    'MDL' => 0.702804 / 21.9058444,
-    '-' => nil,
-    'EEK' => nil,
-    'NLG' => nil
-  }
-
-  RATES_EUR = {
-    'LVL' => 1 / 0.702804,
-    'EUR' => 1,
-    'USD' => 1.09700, # 0.544000,
-    'GBP' => 0.77483, # 0.875000,
-    'RUB' => 80.16740, # 0.017500,
-    'CHF' => 1.08980, # 0.580000,
-    'BYR' => 23361.19, # 0.063400,
-    'NOK' => 9.38300, # 0.094500,
-    'LTL' => 0.298203555, # 0.204000,
-    'AUD' => 1.48590, # 0.556000,
-    'MTL' => 0.429300, # 1.62,
-    'NZD' => 1.62230, # 0.446000,
-    'CAD' => 1.47170, # 0.551000,
-    'SEK' => 9.33450, # 0.081500,
-    'CYP' => 0.585274, #1.18998,
-    'DKK' => 7.43820,
-    'TRY' => 3.40580,
-    'MDL' => 21.9058444,
-    '-' => nil,
-    'EEK' => nil,
-    'NLG' => nil
-  }
-
   def convert_amount_lvl(amount, currency)
-    if rate = RATES_LVL[currency]
-      amount.to_f * rate
-    elsif !RATES_LVL.key?(currency)
-      raise ArgumentError, "trūkst #{currency} valūtas LVL kurss"
-    end
+    CurrencyRates.to_lvl(amount, currency)
   end
 
   def convert_amount_eur(amount, currency)
-    if rate = RATES_EUR[currency]
-      amount.to_f / rate
-    elsif !RATES_EUR.key?(currency)
-      raise ArgumentError, "trūkst #{currency} valūtas EUR kurss"
-    end
+    CurrencyRates.to_eur(amount, currency)
   end
 
   # return [amount, currency, amount_lvl, amount_eur]
