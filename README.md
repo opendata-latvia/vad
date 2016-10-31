@@ -20,6 +20,9 @@ Apmēram ik pēc 10 deklarācijām (kas savāktas no vienas IP adreses), parād�
 Tiek parādīti divi vārdi, bet pārbaudīts tiek tikai viens - parasti tas ir vienkāršākais vārds, kā, piemēram, "road", "route", "calle" vai kas tamlīdzīgs.
 Pietiek ievadīt šo vienu vienkāršāko vārdu. Ja nav skaidrs, kas jāievada, var ievadīt jebko un tad parādīsies nākamie vārdi.
 
+Parametros var atzīmēt "Automātiska CAPTCHA aizpilde" un tad daudzas reizes automātiski tiks mēģināts aizpildīt biežāk lietoto CAPTCHA kodu,
+ja tas neizdosies, tad beigās varēs ievadīt kodu manuāli.
+
 Datu apskate
 ------------
 

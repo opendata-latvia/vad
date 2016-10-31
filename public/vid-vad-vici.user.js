@@ -24,6 +24,11 @@ var appid="opendata-mvdbs";
 var appver=9;
 var vadPath="/VID_PDB/VAD";
 
+var captchaWord = "calle";
+var captchaPreviousChallenge;
+var captchaCounter = 0;
+var captchaLimit = 50;
+
 
 /*--- waitForKeyElements():  A handy, utility function that
  does what it says.
@@ -267,8 +272,8 @@ function newHrefVad(item, isOld, that, captcha) {
 
                 return false;
 
-            }
-            if(captcha==0){
+            } else {
+                captchaCounter = 0;
                 postData(data, item, that);
             }
 
@@ -294,7 +299,24 @@ function solveCaptcha(data){
     $("#csolve").fadeIn("fast");
     $("#tadcode").focus();
 
+    if ($("#autoCaptcha").is(":checked")) {
+        tryDefaultCaptchaWord();
+    }
+}
 
+function tryDefaultCaptchaWord() {
+    if (captchaCounter < captchaLimit) {
+        var currentChallenge = $("#recaptcha_challenge_field").val();
+        if (currentChallenge && currentChallenge != captchaPreviousChallenge) {
+            captchaPreviousChallenge = currentChallenge;
+            captchaCounter += 1;
+            console.log("Try captcha word '" + captchaWord + "', counter " + captchaCounter);
+            $("#tadcode").val(captchaWord);
+            takeSolveCaptcha();
+        } else {
+            setTimeout(tryDefaultCaptchaWord, 100);
+        }
+    }
 }
 
 function takeSolveCaptcha(){
@@ -311,14 +333,19 @@ function takeSolveCaptcha(){
                 console.log("Wrong code. :( Try again...");
                 newHrefVad($("#scid").attr('value'), $("#scold").attr('value'), $("#scthat").attr('value'), 0);
                 return 0;
+            } else {
+                captchaCounter = 0;
+                $("#csolve").fadeOut();
+                $("#tadcode").val('');
             }
             postData(data, $("#scid").attr('value'), $("#scthat").attr('value'), 1);
         },
     });
 
-    $("#csolve").fadeOut();
-    $("#tadcode").attr('value', '');
-
+    if (captchaCounter == 0 || captchaCounter >= captchaLimit) {
+        $("#csolve").fadeOut();
+        $("#tadcode").val('');
+    }
 }
 
 function hijackFunction(first){
@@ -371,7 +398,11 @@ function addStatusSpace(){
 }
 
 function addProjectInput() {
-    $("#frmQuery").append('<div class="surname"><label for="project">Projekts</label><input id="project" maxlength="120" name="project" size="30" type="text" value=""></div>');
+    $("#frmQuery").append(
+        '<div class="surname"><label for="project">Projekts</label><input id="project" maxlength="120" size="30" type="text" value="">' +
+        '<label for="autoCaptcha">Automātiska CAPTCHA aizpilde</label><input id="autoCaptcha" type="checkbox" value="1">' +
+        '</div>'
+    );
 }
 
 function addCaptchaSpace(){
