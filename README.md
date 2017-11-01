@@ -10,13 +10,14 @@ Uzinstalējiet [Tampermonkey paplašinājumu Google Chrome](https://chrome.googl
 
 Uzinstalējiet [VAD datu savākšanas skriptu](https://vad.opendata.lv/vid-vad-vici.user.js).
 
-Sāciet [savākt datus](https://www6.vid.gov.lv/vid_pdb/vad).
+Sāciet [savākt datus](https://www6.vid.gov.lv/VAD).
 
 Izdomājiet unikālu projekta nosaukumu, ko ievadīt Projekts laukā.
 Ja jūs esat ar e-pasta adresi `@xxx.lv`, tad rekomendējam visiem jūsu projektiem izmantot `xxx` prefiksu, piemēram, `xxx2016`
 (lai varētu atpazīt, kas izmanto kurus projektus).
 
-Apmēram ik pēc 10 deklarācijām (kas savāktas no vienas IP adreses), parādīsies popup logs, kur jāievada CAPTCHA kods.
+Apmēram ik pēc 10 deklarācijām (kas savāktas no vienas IP adreses), var parādīties popup logs, kur jāievada CAPTCHA kods.
+(Papildinājums: Izskatās, ka šis ir tagad noņemts un tagad vairs neprasa CAPTCHA kodus).
 Tiek parādīti divi vārdi, bet pārbaudīts tiek tikai viens - parasti tas ir vienkāršākais vārds, kā, piemēram, "road", "route", "calle" vai kas tamlīdzīgs.
 Pietiek ievadīt šo vienu vienkāršāko vārdu. Ja nav skaidrs, kas jāievada, var ievadīt jebko un tad parādīsies nākamie vārdi.
 
