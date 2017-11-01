@@ -157,7 +157,8 @@ function postData(data, id, that){
     var resultData = {
         type: trim($data.find("tr:contains('Deklarācijas veids:') td:nth-of-type(2)").text()),
         name: trim($data.find("tr:contains('Vārds, uzvārds:') td:nth-of-type(2)").text()),
-        workplace: trim($data.find("tr:contains('Darbavieta:') td:nth-of-type(2)").text()),
+        workplace: trim($data.find("tr:contains('Darbavieta:') td:nth-of-type(2)").text() ||
+                       $data.find("tr:contains('Darbavieta vai valsts amatpersonu saraksta iesniedzējas institūcija:') td:nth-of-type(2)").text()),
         workplace_role: trim($data.find("tr:contains('Valsts amatpersonas amats:') td:nth-of-type(2)").text()),
         date_added: trim($data.find("tr:contains('Iesniegta VID:') td:nth-of-type(2)").text()),
         date_published: trim($data.find("tr:contains('Publicēta:') td:nth-of-type(2)").text()),
