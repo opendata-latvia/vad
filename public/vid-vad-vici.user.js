@@ -244,8 +244,11 @@ function newHrefVad(item, isOld, that, captcha) {
     $("#"+that).append(preload);
 
     // VID's magic o.O
-    var url = (isOld == "2") ? '/VID_PDB/VAD/VADData'
-        : '/VID_PDB/VAD/VAD2002Data';
+    // var url = (isOld == "2") ? '/VID_PDB/VAD/VADData'
+    //    : '/VID_PDB/VAD/VAD2002Data';
+
+    // Fixed the new URL on 2017-11-01:
+    var url = '/VAD/VADData';
 
     $.ajax({
         url: url,
@@ -323,7 +326,9 @@ function takeSolveCaptcha(){
 
     $.ajax({
         type: 'POST',
-        url: "/VID_PDB/VAD/VADDataDeclaration",
+        // url: "/VID_PDB/VAD/VADDataDeclaration",
+        // Fixed the new URL on 2017-11-01 but now it seems that Captchas are not required anymore
+        url: "/VAD/VADDataDeclaration",
         data: {'recaptcha_response_field': $("#tadcode").val(), 'recaptcha_challenge_field' : $("#recaptcha_challenge_field").val()},
         success: function(data) {
 
@@ -468,7 +473,7 @@ function addCSS(){
         'font-size: 21px; '+
         '}'+
 
-        ' .preload {left: -16px;position: absolute; top: 0; width: 16px;; width: 16px; height: 16px;display: block; background-image: url("http://www6.vid.gov.lv/VID_PDB/Content/Images/spinner.gif"); }'+
+        ' .preload {left: -16px;position: absolute; top: 0; width: 16px;; width: 16px; height: 16px;display: block; background-image: url("/Content/Images/spinner.gif"); }'+
         '</style>');
 }
 
