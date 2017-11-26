@@ -20,6 +20,7 @@ class Declaration < ActiveRecord::Base
     {:name => 'project', :label => 'Projekts', :data_type => :string},
     {:name => 'person_id', :label => 'Personas ID', :data_type => :integer},
     {:name => 'full_name', :label => 'Vārds, Uzvārds', :data_type => :string},
+    {:name => 'id', :label => 'Deklarācijas ID', :data_type => :integer},
     {:name => 'kind', :label => 'Veids', :data_type => :string},
     {:name => 'period_year', :label => 'Gads', :data_type => :string},
     {:name => 'workplace', :label => 'Darba vieta', :data_type => :string},
@@ -40,9 +41,9 @@ class Declaration < ActiveRecord::Base
     {:name => 'declaration_children_count', :label => 'Bērnu skaits', :data_type => :integer}
   ]
 
-
-
   DATATABLE_COLUMN_NAMES = DATATABLE_COLUMNS.map{|c| c[:name]}
+
+  DATATABLE_DECLARATION_ID_INDEX = DATATABLE_COLUMNS.map.with_index{|column, i| column[:name] == 'id' ? i : nil}.compact.first
 
   def self.datatable_columns
     DATATABLE_COLUMNS
@@ -67,7 +68,7 @@ class Declaration < ActiveRecord::Base
 
     private
 
-    PART_REGEXP = /
+    PART_REGEXP = %r{
       (                 # attribute or value if no attribute is present
         [^\s"':=><!]+   # attribute without spaces or quotes
       |
@@ -85,7 +86,7 @@ class Declaration < ActiveRecord::Base
         '[^']+'         # value in single quotes
       )
       )?
-    /x
+    }x
     QUOTED_VALUE_REGEXP = /\A(["'])(.*)\1\Z/
 
     def parse_query
@@ -166,6 +167,8 @@ class Declaration < ActiveRecord::Base
           end
         end
         csv_data
+      else
+        result_rows
       end
       yield data
       break if !all_pages || result_rows.length == 0
@@ -173,6 +176,83 @@ class Declaration < ActiveRecord::Base
     end
   end
 
+  def self.download_klasses
+    [
+      Declaration,
+      DeclarationCash,
+      DeclarationCompany,
+      DeclarationDeal,
+      DeclarationDebt,
+      DeclarationIncome,
+      DeclarationLoan,
+      DeclarationOtherFact,
+      DeclarationOtherWorkplace,
+      DeclarationRealEstate,
+      DeclarationRelative,
+      DeclarationSecurity,
+      DeclarationVehicle
+    ]
+  end
+
+  def self.download_all_files(params)
+    FileUtils.mkdir_p download_files_path
+
+    (klasses = download_klasses).each do |klass|
+      create_table_csv_file(klass)
+    end
+
+    data_download(params) do |data|
+      declaration_ids = data.map{|r| r[DATATABLE_DECLARATION_ID_INDEX]}.compact
+      next unless declaration_ids.present?
+      klasses.each do |klass|
+        append_rows_to_table_csv_file(klass, klass_table_rows(klass, declaration_ids))
+      end
+    end
+    zipped_log_files(klasses)
+  end
+
+  def self.klass_table_rows(klass, declaration_ids)
+    sql = "SELECT * FROM #{klass.table_name} WHERE "
+    id_name = klass == Declaration ? 'id' : 'declaration_id'
+    sql << "#{id_name} IN (#{declaration_ids.map(&:to_s).join(',')}) ORDER BY #{id_name}"
+    sql << ", id" unless klass == Declaration
+     klass.connection.select_rows(sql)
+  end
+
+  def self.zipped_log_files(klasses)
+    zip_file_path = download_files_path.join("declarations.zip")
+    File.delete zip_file_path if File.file?(zip_file_path)
+
+    Zip::File.open(zip_file_path, Zip::File::CREATE) do |zip_file|
+      klasses.each do |klass|
+        file_path = table_csv_file_name(klass)
+        file_name = File.basename(file_path)
+        zip_file.add file_name, file_path
+      end
+    end
+    zip_file_path
+  end
+
+
+  def self.create_table_csv_file(klass)
+    File.open(table_csv_file_name(klass), 'w') do |f|
+      f.puts klass.connection.columns(klass.table_name).map(&:name).to_csv
+    end
+  end
+
+  def self.append_rows_to_table_csv_file(klass, rows)
+    File.open(table_csv_file_name(klass), 'a') do |f|
+      f.puts rows.map(&:to_csv).join
+    end
+  end
+
+  def self.download_files_path
+    Rails.root.join("tmp/download")
+  end
+
+  def self.table_csv_file_name(klass)
+    download_files_path.join("#{klass.table_name}.csv")
+  end
 
   private
 

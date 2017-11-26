@@ -12,6 +12,7 @@
     %h4 Lejuplādēt datus
     %p
       = link_to "CSV formātā", "#", :data => {"download-path" => download_declarations_path(:format => 'csv')}, :class => "btn"
+      = link_to "Visus detalizētos datus", "#", :data => {"download-path" => download_all_declarations_path}, :class => "btn"
 
 :javascript
   $(function() {

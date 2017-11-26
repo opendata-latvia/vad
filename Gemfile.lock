@@ -195,6 +195,7 @@ GEM
       activesupport (>= 3.0)
       railties (>= 3.0)
       rspec (~> 2.10.0)
+    rubyzip (1.2.0)
     sass (3.2.1)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -268,6 +269,7 @@ DEPENDENCIES
   redis
   redis-rails (~> 3.2.3)
   rspec-rails
+  rubyzip (~> 1.2.0)
   sass
   sass-rails (~> 3.2.5)
   settingslogic

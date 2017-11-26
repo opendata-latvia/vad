@@ -35,4 +35,10 @@ class DeclarationsController < ApplicationController
     end
   end
 
+  def download_all
+    authorize! :read, Declaration
+
+    send_file Declaration.download_all_files(params)
+  end
+
 end

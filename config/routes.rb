@@ -18,5 +18,6 @@ Vad::Application.routes.draw do
   resources :declarations do
     get :datatable, :on => :collection
     get :download, :on => :collection
+    get :download_all, :on => :collection
   end
 end
